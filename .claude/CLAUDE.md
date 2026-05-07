@@ -161,6 +161,8 @@ Every non-trivial output ends with a Notion write step. Outputs do not just floa
 
 **Default mode: stage and confirm.** Claude drafts to `./.scratch/notion-stage/<topic>-<date>.md` with frontmatter properties + body, then asks: `Push to <DB Name> as draft? (yes / no / change destination / change brand / edit)`. Only writes via the Notion MCP after explicit yes.
 
+**Exception: session closeout.** When the user enters `ai-session-save`, do not ask for a second confirmation. Save the local session files and immediately push the generated Notion-ready log to the configured AI session-log destination if the Notion connector is available.
+
 Override commands user can type:
 - `direct-write` → skip staging this session
 - `stage` → return to default

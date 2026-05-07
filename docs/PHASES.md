@@ -14,6 +14,8 @@ All skills live at `~/.claude/skills/<name>/SKILL.md`. Claude Code auto-loads th
 | `claude-usage-protocol` | Claude escalation discipline. Anti-patterns. Tier tables. |
 | `usage-mode-awareness` | PEAK/OFFPEAK detection logic + threshold table. |
 
+Session closeout is handled by `ai-session-save`: local export first, then Notion page creation when a Notion connector is available.
+
 ---
 
 ## Phase 2: Marketing / business (10 skills)

@@ -158,7 +158,7 @@ See `docs/PHASES.md` for the full skill index with descriptions.
 - `ai-mode status` → show global routing mode
 - `ai-mode codex` → switch to Codex-primary mode
 - `ai-mode claude` → switch to Claude escalation/review mode
-- `ai-session-save` → export the latest Codex session into raw, structured, and Notion-ready logs
+- `ai-session-save` → export the latest Codex session and, when a Notion connector is available, create the Notion session-log page
 
 ### Wrappers
 
@@ -190,6 +190,15 @@ Session logs are written to:
 ```text
 ~/Documents/workspace/AI Session Logs/
 ```
+
+When `ai-session-save` is entered inside a connected Codex session, the routing instructions treat it as a full closeout command:
+
+- save the local raw/structured/Notion-ready files
+- read the generated `notion-ready.md`
+- create the Notion session-log page
+- return both the local folder path and the Notion page URL
+
+If no Notion connector is available, the local export still completes and the Notion push is skipped with a clear note.
 
 ### Subagents
 

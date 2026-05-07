@@ -19,6 +19,12 @@ Do not assume a Claude layer will route, review, summarize, or write outputs for
 
 - Write bulky logs, research dumps, draft reports, and intermediate artifacts to `./.scratch/`.
 - Save end-of-session exports with `ai-session-save`; default output is `~/Documents/workspace/AI Session Logs/`.
+- When the user enters `ai-session-save` as a session-ending request, do the whole closeout in one pass:
+  1. Run `ai-session-save.cmd` locally.
+  2. Read the generated `notion-ready.md`.
+  3. Create a Notion page from that log under the configured AI session-log parent page.
+  4. Return the local folder path and Notion page URL.
+  If the Notion connector is unavailable, still save the local files and clearly say the Notion push was skipped.
 - Stage Notion-ready drafts in `./.scratch/notion-stage/` as Markdown with clear frontmatter. Do not claim the draft has been pushed to Notion unless a real Notion tool is available and used.
 - Keep final replies concise: what changed, what was verified, and any remaining blocker.
 

@@ -191,3 +191,11 @@ ai-mode claude
 ```
 
 The global mode file lives at `~/.claude/.ai-routing/mode` unless `AI_ROUTING_HOME` is set.
+
+End a Codex session with:
+
+```bash
+ai-session-save
+```
+
+In connected Codex sessions, this saves local session logs and creates the Notion session-log page in one closeout step.

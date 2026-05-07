@@ -14,6 +14,7 @@ $ErrorActionPreference = 'Stop'
 if ($Help) {
   Write-Host "Usage: ai-session-save [-SessionId <codex-session-id>] [-Title <title>] [-OutputRoot <path>]"
   Write-Host "Exports raw transcript, structured session log, and Notion-ready session log."
+  Write-Host "In a connected Codex session, routing rules should also push the Notion-ready log to Notion."
   exit 0
 }
 
@@ -283,3 +284,4 @@ Write-Host "  Raw JSONL: $rawJsonl"
 Write-Host "  Raw transcript: $rawMd"
 Write-Host "  Session log: $sessionLog"
 Write-Host "  Notion-ready: $notionReady"
+Write-Host "  Notion action: create a Notion page from notion-ready.md when a Notion connector is available."
