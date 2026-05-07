@@ -7,8 +7,8 @@ param(
 
 if ($Args.Count -gt 0 -and $Args[0] -in @("-h", "--help", "help")) {
   Write-Host "Usage: cx [task]"
-  Write-Host "Starts Codex as the primary agent for Claude outage mode."
-  Write-Host "Run 'ai-mode codex' first to switch the global routing mode."
+  Write-Host "Starts Codex as the primary routing agent."
+  Write-Host "Run 'ai-mode codex' to make Codex-primary mode explicit."
   exit 0
 }
 

@@ -20,13 +20,13 @@ case "$COMMAND" in
     mkdir -p "$STATE_DIR"
     printf "claude" > "$MODE_FILE"
     echo "AI routing mode: claude"
-    echo "Use Claude Code normally. Codex remains available through cdx/cx."
+    echo "Use Claude for deliberate escalation/review. Codex remains available through cx/cdx."
     ;;
   codex)
     mkdir -p "$STATE_DIR"
     printf "codex" > "$MODE_FILE"
     echo "AI routing mode: codex"
-    echo "Start Codex-primary work with: cx"
+    echo "Start normal work with: cx"
     ;;
   status)
     echo "AI routing mode: $(read_mode)"
@@ -34,8 +34,8 @@ case "$COMMAND" in
     ;;
   -h|--help|help)
     echo "Usage: ai-mode [status|codex|claude]"
-    echo "  ai-mode codex   Switch globally to Codex-primary outage mode"
-    echo "  ai-mode claude  Switch globally back to Claude orchestration"
+    echo "  ai-mode codex   Switch globally to Codex-primary mode"
+    echo "  ai-mode claude  Switch globally to Claude escalation/review mode"
     echo "  ai-mode status  Show the current mode"
     ;;
   *)

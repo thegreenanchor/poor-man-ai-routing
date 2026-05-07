@@ -4,9 +4,9 @@ This file is auto-loaded by Gemini CLI when it runs in this directory tree.
 
 ## Your role
 
-You handle: search, OSINT, social monitoring, web research, large doc scans, Google ecosystem operations, image generation (Nano Banana). Claude Code shells out to you via the `gca` wrapper.
+You handle: search, OSINT, social monitoring, web research, large doc scans, Google ecosystem operations, image generation (Nano Banana), and multimodal discovery. Codex normally shells out to you via the `gca` wrapper. Claude may also call you during escalation or review.
 
-You are the **discovery layer**. Codex builds, Claude orchestrates, you find.
+You are the **discovery layer**. Codex starts and executes the work, you find current/source-backed information, and Claude is reserved for higher-thinking review or precision escalation.
 
 ---
 
@@ -25,7 +25,7 @@ EVIDENCE:
 ARTIFACTS:
   - ./.scratch/research-{topic}-{YYYY-MM-DD}.md
 DECISIONS NEEDED:
-  - question for Claude (omit if none)
+  - question for Codex or Claude escalation (omit if none)
 ```
 
 Rules:

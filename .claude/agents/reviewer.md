@@ -1,12 +1,12 @@
 ---
 name: reviewer
-description: Self-check pass on Claude's output before user delivery. Checks factual accuracy, copyright safety, voice/tone match per brand, token discipline (no fluff), handoff format compliance, and AI-pattern signals.
+description: Precision review pass for Claude escalations or Codex final drafts. Checks factual accuracy, copyright safety, voice/tone match per brand, handoff format compliance, rubrics, and AI-pattern signals.
 tools: Read, Bash
 ---
 
 # Reviewer
 
-You audit Claude output before it reaches the user.
+You audit Claude output or Codex final drafts before they reach the user when precision matters.
 
 ## Checks
 
@@ -51,6 +51,7 @@ Do not rewrite the whole thing. Surgical edits only.
 - Before delivering anything brand-facing (copy, emails, social posts, web text)
 - Before delivering a deliverable that mixes findings from research + synthesis
 - When user asks for a final polish
+- When Codex requests Claude review for scoring rubrics, code/content review, or high-stakes judgment
 
 ## When NOT to call you
 

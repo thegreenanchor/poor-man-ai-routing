@@ -1,6 +1,6 @@
 ---
 name: claude-usage-protocol
-description: The detailed token discipline SOP. Use at the start of any non-trivial work to apply the savings rules. Defines tiered access, scratchpad rules, when to spawn subagents, and the anti-patterns that burn Claude usage. Always relevant when planning a task.
+description: The detailed Claude escalation SOP. Use when Codex escalates work to Claude for strategy, scoring, review, or precision QA. Defines tiered access, scratchpad rules, and anti-patterns that burn Claude usage.
 ---
 
 # Claude Usage Protocol
@@ -9,15 +9,15 @@ description: The detailed token discipline SOP. Use at the start of any non-triv
 
 Claude burns the most expensive tokens in the system. Every line read, every tool result, every retry costs. The protocol is: **Claude touches as little as possible, as briefly as possible, only for decisions only Claude can make.**
 
-Everything else gets pushed to Codex or Gemini, who return compressed results.
+Codex is the default workbench. Gemini is the discovery layer. Everything that does not require Claude-level judgment stays with Codex or Gemini.
 
 ## The 8 rules
 
-### Rule 1 — Default to delegate
+### Rule 1 — Default to Codex/Gemini
 
-- Tasks needing 3+ execution tool calls: hand to Codex.
+- Tasks needing execution tool calls: keep in Codex.
 - Tasks involving search, web fetch, OSINT, social, or large doc scan: hand to Gemini.
-- Claude executes directly only when delegation overhead exceeds the work itself.
+- Claude executes directly only for strategy, scoring rubrics, precision review, final QA, or high-stakes judgment.
 
 ### Rule 2 — Three access tiers
 
@@ -48,7 +48,7 @@ The `EVIDENCE` block carries the literal bytes Claude needs. No re-read required
 ### Rule 4 — Scratchpad discipline
 
 - Heavy outputs write to `./.scratch/` in the working dir.
-- Claude reads scratch files only when synthesis is needed, not as a default step.
+- Claude reads scratch files only when precision review or synthesis is needed, not as a default step.
 - Scratch persists across sessions.
 
 ### Rule 5 — No redundant verification
@@ -57,10 +57,10 @@ The `EVIDENCE` block carries the literal bytes Claude needs. No re-read required
 - If Gemini returns sources with URLs, do not re-fetch unless user flags suspicion.
 - If a subagent reports done, trust the STATUS unless EVIDENCE contradicts.
 
-### Rule 6 — Subagent-first for multi-step work
+### Rule 6 — Codex-first for multi-step work
 
-- Tasks needing 5+ tool calls: spawn a subagent.
-- Subagents have their own context window. Main thread stays clean.
+- Tasks needing 5+ tool calls: send back to Codex or a scoped subagent.
+- Subagents have their own context window. The Claude escalation thread stays clean.
 - Subagent returns the same compressed format.
 
 ### Rule 7 — Stop-talking
@@ -72,7 +72,7 @@ The `EVIDENCE` block carries the literal bytes Claude needs. No re-read required
 ### Rule 8 — Token-cheap defaults
 
 - Use Haiku-tier reasoning where the response is mechanical.
-- Reserve top-tier reasoning for routing decisions and final synthesis.
+- Reserve top-tier reasoning for routing decisions, scoring rubrics, precision review, and final synthesis.
 
 ## Line caps and file caps
 
@@ -85,7 +85,7 @@ Beyond these: delegate. No exceptions unless a Tier 3 override is justified in t
 
 ## Tool-specific rules
 
-**Edit operations** — Codex returns the exact `old_string` (with surrounding context for uniqueness) and the proposed `new_string`. Claude calls Edit. No re-read needed.
+**Edit operations** — Codex performs edits directly. If Claude is reviewing, Codex returns the exact changed slice and evidence. No re-read needed unless precision review requires it.
 
 **Spreadsheets** — Codex slices via the `xlsx` skill. Claude never opens the file directly.
 
@@ -100,10 +100,10 @@ Beyond these: delegate. No exceptions unless a Tier 3 override is justified in t
 These all waste Claude usage. Avoid:
 
 - **Reading a full file to find one function.** Use Grep or ask Codex.
-- **Reading multiple files to "get oriented."** Spawn `orchestrator` subagent.
+- **Reading multiple files to "get oriented."** Send the task back to Codex.
 - **Fetching URLs directly.** Always Gemini.
 - **Re-summarizing a Codex/Gemini summary.** Pass it through.
-- **Running long bash sequences in main thread.** Delegate to builder subagent.
+- **Running long bash sequences in Claude.** Send back to Codex.
 - **Padding final replies with "I hope this helps" / "Let me know if..."** Cut.
 - **Re-validating worker output** with new tool calls when EVIDENCE already covers it.
 - **Reading scratch files as a default first step.** Synthesize from summaries; open scratch only if needed.
@@ -115,14 +115,14 @@ Claude can break rules when:
 - File is under the cap → Tier 3 read is fine.
 - A previous Tier 2 slice was insufficient and the work needs cross-section context.
 - The user explicitly says "read it yourself" or "do it directly."
-- Overhead of delegation > the work.
+- The user explicitly asked Claude for review, rubric, or judgment.
 
 Document the override in the response: "Reading directly because [reason]."
 
 ## Pre-work checklist (run mentally before any task)
 
 1. What's the dominant domain? (Code, research, write, plan)
-2. Who should execute? (Claude direct, cdx, gca, subagent)
+2. Who should execute? (Codex, gca/Gemini, Claude escalation)
 3. What tier do I need? (1 default, 2 if exact bytes matter)
 4. What's the success criteria for the worker?
 5. What's the format of the return?
@@ -131,7 +131,7 @@ If you can't answer all 5 in 10 seconds, the task needs more decomposition first
 
 ## Usage savings, ranked by leverage
 
-1. **Use Codex/Gemini for everything possible** (~70% savings on execution-heavy work).
+1. **Start in Codex and use Gemini for discovery** (~70% savings on execution-heavy work).
 2. **Apply line caps + Tier 1 default** (~30% savings on read-heavy work).
 3. **Spawn subagents for multi-step** (~40% savings on complex tasks; main thread stays cheap).
 4. **Tighten final reply** (~10% savings, every reply).

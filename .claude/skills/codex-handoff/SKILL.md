@@ -1,12 +1,13 @@
 ---
 name: codex-handoff
-description: How to construct Codex CLI prompts. Use whenever delegating code, file ops, refactors, scaffolding, automation builds, or multi-file scans to Codex via the `cdx` wrapper. Defines the scoped-task template, success criteria patterns, and what NOT to send to Codex.
+description: How to use Codex as the primary workbench or as a scoped worker via `cdx`. Defines the scoped-task template, success criteria patterns, and escalation boundaries.
 ---
 
 # Codex Handoff
 
 ## When to use Codex
 
+- Default daily starting point via `cx`.
 - Writing new code (any language).
 - Editing existing code (single file or repo-wide).
 - Multi-file scans (find all callers, find all references, audit imports).
@@ -19,9 +20,9 @@ description: How to construct Codex CLI prompts. Use whenever delegating code, f
 
 - Web research → Gemini.
 - Image generation → Gemini (Nano Banana).
-- Brand-voice copy or marketing prose → Claude direct.
-- Strategy or judgment calls → Claude direct.
-- Pure conversation → Claude direct.
+- Final brand-voice polish when precision matters → Claude review.
+- Strategy, scoring rubrics, and high-stakes judgment → Claude escalation.
+- Web research, OSINT, Google ecosystem, large public-source lookups → Gemini.
 
 ## The scoped-task template
 
@@ -43,6 +44,10 @@ RETURN: STATUS + SUMMARY + EVIDENCE (verbatim diffs, max 10 lines each) + ARTIFA
 ## Calling Codex
 
 ```bash
+# Daily primary session
+cx
+
+# Scoped worker task
 cdx "GOAL: ... FILES: ... SUCCESS: ... CONSTRAINTS: ... RETURN: ..."
 ```
 
@@ -125,11 +130,11 @@ Do NOT re-read files Codex already showed in EVIDENCE. The slice is canonical.
 ## Anti-patterns
 
 - **Vague goals**: "Improve the API." Codex won't know when it's done. Always observable outcome.
-- **No success criteria**: Codex guesses, you re-prompt, Claude burns tokens.
+- **No success criteria**: Codex guesses and you re-prompt.
 - **Multiple unrelated goals in one call**: split into two calls.
 - **Sending raw user prose**: translate it into the template first. Faster output, less rework.
 - **Asking Codex to fetch URLs**: route to Gemini, pass results in.
-- **Asking Codex to write marketing copy**: voice will be off. Send to Claude.
+- **Skipping Claude review for high-stakes final copy/code**: escalate when precision matters.
 
 ## Mode awareness
 

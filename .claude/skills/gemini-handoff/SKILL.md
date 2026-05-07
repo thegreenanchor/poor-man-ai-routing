@@ -19,7 +19,7 @@ description: How to construct Gemini CLI prompts. Use whenever delegating search
 
 - Code generation → Codex.
 - File edits → Codex.
-- Brand-voice writing → Claude.
+- Brand-voice final polish → Claude review when precision matters.
 - Anything requiring private data or login-walled content → ask user.
 
 ## The question template
@@ -146,8 +146,8 @@ If a request crosses these lines, Gemini returns STATUS: blocked. Re-route to us
 ## Anti-patterns
 
 - **Open-ended research questions**: "Tell me about marketing." Use precise scope.
-- **Asking Gemini to write the deliverable**: Gemini researches; Claude writes.
-- **Re-running searches** Claude could have synthesized from the existing dump.
+- **Asking Gemini to write the deliverable**: Gemini researches; Codex writes/synthesizes.
+- **Re-running searches** Codex could have synthesized from the existing dump.
 - **Skipping `gca` and calling `gemini` directly**: loses format enforcement.
 
 ## Mode awareness

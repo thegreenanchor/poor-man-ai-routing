@@ -5,8 +5,8 @@ set -euo pipefail
 
 if [ "${1:-}" = "-h" ] || [ "${1:-}" = "--help" ] || [ "${1:-}" = "help" ]; then
   echo "Usage: cx [task]"
-  echo "Starts Codex as the primary agent for Claude outage mode."
-  echo "Run 'ai-mode codex' first to switch the global routing mode."
+  echo "Starts Codex as the primary routing agent."
+  echo "Run 'ai-mode codex' to make Codex-primary mode explicit."
   exit 0
 fi
 

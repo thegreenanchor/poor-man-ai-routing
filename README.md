@@ -1,6 +1,6 @@
 # Poor Man AI Routing
 
-A global Claude Code configuration that delegates heavy lifting to Codex CLI and Gemini CLI, applies time-aware usage modes (PEAK / OFFPEAK), enforces a structured handoff format, and ships with 28 domain skills covering marketing, ops, security, and creative work.
+A global Codex-primary routing configuration that keeps Codex as the daily workbench, routes research to Gemini CLI, and reserves Claude Code for higher-thinking review, scoring rubrics, strategy, and precision QA.
 
 Public, generic, fork-and-customize. Brand placeholders in `BRANDS.md`.
 
@@ -8,23 +8,23 @@ Public, generic, fork-and-customize. Brand placeholders in `BRANDS.md`.
 
 ## TL;DR
 
-- **Claude Code** routes, reviews, and talks to the user.
-- **Codex CLI** handles code, file edits, scripts, builds, and verification.
+- **Codex CLI** is where work starts: code, files, docs, scripts, builds, verification, and normal synthesis.
 - **Gemini CLI** handles research, search, OSINT, and source gathering.
-- When Claude usage runs out, switch to Codex-primary mode with `ai-mode codex`, then start work with `cx`.
-- When Claude usage returns, switch back with `ai-mode claude`.
+- **Claude Code** handles escalation: higher-thinking tasks, scoring rubrics, content/code review, strategy, and final QA.
+- Daily start: `ai-mode codex`, then `cx`.
+- Use `ai-mode claude` only when you intentionally want Claude-first escalation/review.
 
 ---
 
 ## What this gives you
 
-- **Three-AI routing**: Claude orchestrates. Codex builds. Gemini researches. Claude burns the fewest tokens.
-- **Codex-primary backup**: when Claude usage runs out, switch globally to Codex with `ai-mode codex` and start work with `cx`.
+- **Three-AI routing**: Codex starts and executes. Gemini researches. Claude reviews and handles precision escalation.
+- **Codex-primary workflow**: switch globally to Codex with `ai-mode codex` and start work with `cx`.
 - **Tiered data access**: Tier 1 summary → Tier 2 slice → Tier 3 full read. Default Tier 1 in PEAK, Tier 2 in OFFPEAK.
 - **Time-aware modes**: PEAK (5am-2pm EST weekdays, max delegation) and OFFPEAK (everything else, more direct work allowed).
 - **Permission posture**: full auto inside the working dir, prompts only for writes outside.
 - **28 skills**: routing, marketing, ops, security, creative.
-- **Subagents**: orchestrator, researcher, builder, reviewer.
+- **Subagents**: researcher, builder, reviewer, plus Claude-side orchestrator for escalation planning.
 - **Bash + PowerShell wrappers**: `cdx` (Codex) and `gca` (Gemini) with format enforcement baked in.
 
 ---
@@ -94,25 +94,23 @@ cx "Inspect this folder and report the current routing mode. Do not edit files."
 gca "TOPIC: What is 2+2? TIER: 1."
 ```
 
-### Step 4: Open Claude Code in any project
+### Step 4: Start Codex-primary work
 
-`CLAUDE.md` rules apply globally. Codex picks up `AGENTS.md` from `~/.claude/AGENTS.md`. Gemini picks up `~/.claude/GEMINI.md`.
+Codex picks up `AGENTS.md` and `CODEX_PRIMARY.md`. Gemini picks up `GEMINI.md`. Claude picks up `CLAUDE.md` when you deliberately escalate.
 
-### Claude outage mode
-
-When Claude usage runs out, switch the global routing mode:
+Set Codex as the global routing mode:
 
 ```bash
 ai-mode codex
 ```
 
-Then start a Codex-primary session:
+Then start work:
 
 ```bash
 cx
 ```
 
-You do not type `cx` before every prompt. Use it once to start a new Codex-primary session. When Claude usage returns:
+You do not type `cx` before every prompt. Use it once to start a new Codex-primary session. When you intentionally need Claude-first review/escalation:
 
 ```bash
 ai-mode claude
@@ -126,16 +124,16 @@ The mode is stored at `~/.claude/.ai-routing/mode` by default. Set `AI_ROUTING_H
 
 ```
 ~/.claude/
-├── CLAUDE.md                  Master rules (always loaded)
-├── CODEX_PRIMARY.md           Codex-primary outage mode instructions
+├── CLAUDE.md                  Claude escalation/review rules
+├── CODEX_PRIMARY.md           Codex-primary daily routing instructions
 ├── settings.json              Permissions, env, hooks
 ├── AGENTS.md                  Codex orientation
 ├── GEMINI.md                  Gemini orientation
 ├── agents/
-│   ├── orchestrator.md        Default planner
+│   ├── orchestrator.md        Claude-side escalation planner
 │   ├── researcher.md          Routes to Gemini
 │   ├── builder.md             Routes to Codex
-│   └── reviewer.md            Brand-voice + token discipline check
+│   └── reviewer.md            Precision review / final QA check
 ├── bin/
 │   ├── cdx.sh / cdx.ps1       Codex wrapper
 │   ├── cx.sh / cx.ps1         Codex-primary launcher
@@ -158,8 +156,9 @@ See `docs/PHASES.md` for the full skill index with descriptions.
 - `/offpeak` → force OFFPEAK posture
 - `/auto` → re-detect from clock
 - `ai-mode status` → show global routing mode
-- `ai-mode codex` → switch to Codex-primary outage mode
-- `ai-mode claude` → switch back to Claude orchestration
+- `ai-mode codex` → switch to Codex-primary mode
+- `ai-mode claude` → switch to Claude escalation/review mode
+- `ai-session-save` → export the latest Codex session into raw, structured, and Notion-ready logs
 
 ### Wrappers
 
@@ -170,16 +169,26 @@ FILES IN SCOPE: ...
 SUCCESS: ...
 RETURN: STATUS + SUMMARY + EVIDENCE."
 
-# Codex-primary outage mode
+# Codex-primary daily mode
 ai-mode codex
 cx
 cx "Fix the failing tests and summarize what changed."
+
+# End-only session logging
+ai-session-save
+ai-session-save -Title "Routing system update"
 
 # Gemini (search / OSINT / large doc scan)
 gca "TOPIC: ...
 SCOPE: ...
 WHAT I NEED: ...
 TIER: 1 or 2."
+```
+
+Session logs are written to:
+
+```text
+~/Documents/workspace/AI Session Logs/
 ```
 
 ### Subagents

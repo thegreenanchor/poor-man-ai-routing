@@ -1,6 +1,6 @@
 # Skill Index (by phase)
 
-All skills live at `~/.claude/skills/<name>/SKILL.md`. Claude Code auto-loads them based on the skill description matching the task.
+All skills live at `~/.claude/skills/<name>/SKILL.md`. Claude Code auto-loads them during escalation based on the skill description matching the task. Codex-primary sessions use the same files as routing reference material.
 
 ---
 
@@ -8,10 +8,10 @@ All skills live at `~/.claude/skills/<name>/SKILL.md`. Claude Code auto-loads th
 
 | Skill | Purpose |
 |---|---|
-| `ai-routing` | Master decision tree: who does what (Claude / Codex / Gemini / subagent). |
+| `ai-routing` | Master decision tree: Codex primary, Gemini discovery, Claude escalation/review. |
 | `codex-handoff` | How to construct Codex prompts. Scoped-task template. |
 | `gemini-handoff` | How to construct Gemini prompts. Search/OSINT patterns. |
-| `claude-usage-protocol` | The 8 rules of token discipline. Anti-patterns. Tier tables. |
+| `claude-usage-protocol` | Claude escalation discipline. Anti-patterns. Tier tables. |
 | `usage-mode-awareness` | PEAK/OFFPEAK detection logic + threshold table. |
 
 ---
@@ -82,20 +82,20 @@ Live at `~/.claude/agents/<name>.md`.
 
 | Subagent | Triggers when |
 |---|---|
-| `orchestrator` | Multi-step task spanning research + build + synthesis. |
+| `orchestrator` | Claude-side escalation planning for strategy, conflicts, or precision QA. |
 | `researcher` | Search, OSINT, social, web, Google ecosystem. |
 | `builder` | Code, file ops, automations, multi-file scans. |
-| `reviewer` | Brand-voice + token-discipline check before delivery. |
+| `reviewer` | Brand-voice, rubric, content/code review, and precision QA before delivery. |
 
 ---
 
 ## How skills get loaded
 
-Claude Code reads the YAML frontmatter (`name`, `description`) of every `SKILL.md`. When a task description matches keywords from a skill's description, Claude auto-loads that skill's body for context. You don't have to mention skills by name; the routing happens via description matching.
+Claude Code reads the YAML frontmatter (`name`, `description`) of every `SKILL.md` during escalation. When a task description matches keywords from a skill's description, Claude auto-loads that skill's body for context. Codex-primary sessions should treat these skills as the shared routing/SOP library.
 
 To force-load a skill: mention its name in the prompt, e.g. "Use the `seo-audit` skill."
 
-To audit which skills are loaded in a session: ask Claude.
+To audit which skills are loaded in a Claude escalation session: ask Claude.
 
 ---
 
@@ -106,7 +106,7 @@ To audit which skills are loaded in a session: ask Claude.
    ```yaml
    ---
    name: your-skill
-   description: When to use this skill. Be specific so Claude can match it. Mention concrete trigger keywords.
+   description: When to use this skill. Be specific so Claude/Codex can match it. Mention concrete trigger keywords.
    ---
    ```
 3. Write the SOP body. Use the existing skills as a template.

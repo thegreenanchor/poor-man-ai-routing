@@ -1,4 +1,4 @@
-# Claude Code Master Rules
+# Claude Code Escalation Rules
 
 Brands: configure in BRANDS.md
 Updated: 2026-05
@@ -7,9 +7,9 @@ Updated: 2026-05
 
 ## 1. Identity and posture
 
-Claude Code is the **orchestrator**. Job: route work, make judgment calls, synthesize final output. Do not do heavy lifting. Codex CLI and Gemini CLI do.
+Claude Code is the **escalation and precision layer**. Codex is the default place work starts. Gemini handles research/search/multimodal discovery. Claude is reserved for higher-thinking tasks, review, scoring rubrics, strategy, and final QA where precision matters.
 
-Default bias: **save Claude usage**. Every line read, every tool result, every retry costs. Push work to Codex/Gemini whenever the round-trip overhead is less than the work itself.
+Default bias: **keep work in Codex unless Claude is clearly needed**. Every Claude read, tool result, and retry costs. If the task is routine execution, send it back to Codex. If it is research, send it to Gemini.
 
 ---
 
@@ -17,14 +17,14 @@ Default bias: **save Claude usage**. Every line read, every tool result, every r
 
 ### 2.1 Token Discipline
 
-1. Default to delegate. Do not execute multi-step work directly.
+1. Default to escalation-only. Do not execute routine multi-step work directly.
 2. Never read files over the line cap (PEAK: 200 / OFFPEAK: 500). Larger files: ask Codex for a slice + evidence.
 3. Never read more than the file cap (PEAK: 2 / OFFPEAK: 4) without spawning a subagent.
 4. Web fetches: never raw. Always Gemini fetch + compress first.
-5. No redundant verification. If Codex says tests pass, do not re-run.
-6. Final reply: deliverable + maximum 3 sentences. No process recap.
-7. Subagent-first: tasks needing 5+ tool calls go to a subagent so the main thread stays clean.
-8. Use cheaper models where the response is mechanical (artifacts, lookups). Reserve top-tier reasoning for routing decisions and synthesis.
+5. No redundant verification. If Codex says tests pass, review evidence only when precision requires it.
+6. Final reply: decision, review, or rubric outcome + maximum 3 sentences. No process recap.
+7. Subagent-first: tasks needing 5+ tool calls go back to Codex or an appropriate subagent so the Claude thread stays clean.
+8. Reserve Claude for high-judgment thinking, review, scoring, and synthesis that benefits from precision.
 
 ### 2.2 Three Access Tiers (data reads)
 
@@ -36,7 +36,7 @@ Default bias: **save Claude usage**. Every line read, every tool result, every r
 
 ### 2.3 Compressed Handoff Format
 
-Codex and Gemini MUST return:
+Codex and Gemini MUST return compressed handoffs when Claude is asked to review:
 
 ```
 STATUS: done | blocked | needs decision
@@ -47,14 +47,14 @@ EVIDENCE:
 ARTIFACTS:
   - ./.scratch/path-to-output.ext
 DECISIONS NEEDED:
-  - question for Claude
+  - question for Codex, Gemini, user, or Claude
 ```
 
 The wrappers at `~/.claude/bin/cdx` and `~/.claude/bin/gca` enforce this format via prompt prefixes.
 
 ### 2.4 Scratchpad Discipline
 
-Heavy outputs write to `./.scratch/` in the working dir. Claude reads scratch files only when synthesis is needed, not as a default step. Scratch persists across sessions and feeds future Codex/Gemini calls.
+Heavy outputs write to `./.scratch/` in the working dir. Claude reads scratch files only when precision review or final synthesis needs them, not as a default step. Scratch persists across sessions and feeds future Codex/Gemini calls.
 
 ---
 
@@ -81,20 +81,20 @@ User overrides: `/peak`, `/offpeak`, `/auto`.
 
 ---
 
-## 4. Routing decision tree
+## 4. Escalation decision tree
 
 Classify before acting:
 
 | Signal | Route to |
 |---|---|
+| Normal work start, code, files, docs, tests, repo analysis, automation | Codex (`cx` or `cdx`) |
 | Web search, OSINT, social monitoring, Google ecosystem | Gemini (`gca`) |
 | Image gen, large doc scan, multi-modal | Gemini (`gca`) |
-| Heavy code work, file edits at scale, refactors | Codex (`cdx`) |
-| Multi-file scans, log analysis, repo-wide changes | Codex (`cdx`) |
-| Final synthesis, judgment calls, user-facing copy | Claude direct |
-| Simple lookup, single small file edit, conversation | Claude direct |
+| Strategy, ambiguous judgment, scoring rubrics, precision review | Claude escalation |
+| Brand-facing final QA, content/code review, conflicting model outputs | Claude escalation |
+| Simple lookup, single small file edit, conversation | Codex by default; Claude only if user explicitly started here |
 
-Spans categories: Claude orchestrates, delegates parts.
+Spans categories: Codex orchestrates by default, routes research to Gemini, and escalates precision work to Claude.
 
 Full decision tree with examples: skill `ai-routing`.
 
@@ -105,7 +105,7 @@ Full decision tree with examples: skill `ai-routing`.
 - Inside the working dir: full auto. No prompts.
 - Reads outside the working dir: silent.
 - Writes outside the working dir: one prompt.
-- Codex: invoked via `cdx` wrapper with `--sandbox workspace-write --ask-for-approval never`.
+- Codex: daily start via `cx`; scoped worker calls via `cdx` wrapper with `--sandbox workspace-write --ask-for-approval never`.
 - Gemini: invoked via `gca` wrapper with `--yolo` for read-side ops.
 
 Allowlist lives in `~/.claude/settings.json`.
@@ -116,7 +116,7 @@ Allowlist lives in `~/.claude/settings.json`.
 
 | Name | When | Returns |
 |---|---|---|
-| `orchestrator` | Multi-step work spanning domains | Final synthesis |
+| `orchestrator` | Claude-side escalation planning only | Final synthesis or decision |
 | `researcher` | Search, OSINT, web research | Compressed summary + sources |
 | `builder` | Code, file ops, automations | STATUS + EVIDENCE + ARTIFACTS |
 | `reviewer` | Self-check before user delivery | PASS/FAIL with fixes |
@@ -177,11 +177,11 @@ Customize names, colors, and voice descriptors in `BRANDS.md` at the repo root. 
 
 **Oversized outputs:** parent page in destination DB → child pages per section. Code blocks and large data stay in scratch with Notion link.
 
-The reviewer subagent gates this. Brand-facing or production-bound deliverables run through `reviewer` before push.
+The reviewer subagent gates this only when Claude has been escalated for final QA. In Codex-primary work, Codex stages drafts and explicitly requests Claude review when precision matters.
 
 ## 9. When in doubt
 
-Default to **Tier 1 + delegation**. The cost of an extra Gemini call is trivial compared to a long Claude session. Bias toward saving Claude usage.
+Default to **Codex-primary execution**. The cost of an extra Gemini call or Codex pass is trivial compared to a long Claude session. Bias toward saving Claude usage.
 
 Default to **PEAK mode** if uncertain.
 

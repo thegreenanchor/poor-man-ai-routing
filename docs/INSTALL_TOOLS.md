@@ -177,14 +177,14 @@ Run the routing system installer (see top-level `README.md`):
 
 It verifies both CLIs are installed and reports back.
 
-If Claude usage runs out after installation:
+After installation, start normal Codex-primary work with:
 
 ```bash
 ai-mode codex
 cx
 ```
 
-When Claude usage returns:
+When you intentionally want Claude-first escalation or review:
 
 ```bash
 ai-mode claude
