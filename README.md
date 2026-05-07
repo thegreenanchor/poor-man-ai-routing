@@ -1,8 +1,8 @@
 # Poor Man AI Routing
 
-A global Claude Code configuration that delegates heavy lifting to Codex CLI and Gemini CLI, applies time-aware usage modes (PEAK / OFFPEAK), enforces a structured handoff format, and ships with 27 domain skills covering marketing, ops, security, and creative work.
+A global Claude Code configuration that delegates heavy lifting to Codex CLI and Gemini CLI, applies time-aware usage modes (PEAK / OFFPEAK), enforces a structured handoff format, and ships with 28 domain skills covering marketing, ops, security, and creative work.
 
-Built for [your name]. Operates across WORK (your day-job brand), SIDE (your agency brand), OTHER (your wellness brand), MAIN (your main brand).
+Public, generic, fork-and-customize. Brand placeholders in `BRANDS.md`.
 
 ---
 
@@ -23,7 +23,7 @@ Built for [your name]. Operates across WORK (your day-job brand), SIDE (your age
 - **Tiered data access**: Tier 1 summary → Tier 2 slice → Tier 3 full read. Default Tier 1 in PEAK, Tier 2 in OFFPEAK.
 - **Time-aware modes**: PEAK (5am-2pm EST weekdays, max delegation) and OFFPEAK (everything else, more direct work allowed).
 - **Permission posture**: full auto inside the working dir, prompts only for writes outside.
-- **27 skills**: routing, marketing, ops, security, creative.
+- **28 skills**: routing, marketing, ops, security, creative.
 - **Subagents**: orchestrator, researcher, builder, reviewer.
 - **Bash + PowerShell wrappers**: `cdx` (Codex) and `gca` (Gemini) with format enforcement baked in.
 
