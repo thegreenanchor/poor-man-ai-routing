@@ -6,6 +6,16 @@ Built for [your name]. Operates across WORK (your day-job brand), SIDE (your age
 
 ---
 
+## TL;DR
+
+- **Claude Code** routes, reviews, and talks to the user.
+- **Codex CLI** handles code, file edits, scripts, builds, and verification.
+- **Gemini CLI** handles research, search, OSINT, and source gathering.
+- When Claude usage runs out, switch to Codex-primary mode with `ai-mode codex`, then start work with `cx`.
+- When Claude usage returns, switch back with `ai-mode claude`.
+
+---
+
 ## What this gives you
 
 - **Three-AI routing**: Claude orchestrates. Codex builds. Gemini researches. Claude burns the fewest tokens.
