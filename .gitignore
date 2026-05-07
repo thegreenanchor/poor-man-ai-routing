@@ -1,0 +1,7 @@
+.scratch/
+.claude.bak.*/
+*.bak
+*.tmp
+node_modules/
+.env
+.env.*

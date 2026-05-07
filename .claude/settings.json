@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Read",
+      "Write",
+      "Edit",
+      "Glob",
+      "Grep",
+      "Task",
+      "WebSearch",
+      "WebFetch",
+      "Bash(date:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(wc:*)",
+      "Bash(grep:*)",
+      "Bash(rg:*)",
+      "Bash(find:*)",
+      "Bash(mkdir:*)",
+      "Bash(touch:*)",
+      "Bash(cp:*)",
+      "Bash(mv:*)",
+      "Bash(cdx:*)",
+      "Bash(gca:*)",
+      "Bash(codex:*)",
+      "Bash(gemini:*)",
+      "Bash(git:status)",
+      "Bash(git:diff)",
+      "Bash(git:log:*)",
+      "Bash(git:add:*)",
+      "Bash(git:commit:*)",
+      "Bash(git:branch:*)",
+      "Bash(git:checkout:*)",
+      "Bash(npm:run:*)",
+      "Bash(npm:install)",
+      "Bash(npm:test)",
+      "Bash(npx:*)",
+      "Bash(node:*)",
+      "Bash(python:*)",
+      "Bash(python3:*)",
+      "Bash(pip:install:*)",
+      "Bash(docker:ps)",
+      "Bash(docker:logs:*)",
+      "Bash(docker:images)",
+      "Bash(docker:compose:up:*)",
+      "Bash(docker:compose:down)"
+    ],
+    "deny": [
+      "Bash(rm:-rf:/)",
+      "Bash(rm:-rf:/*)",
+      "Bash(rm:-rf:~)",
+      "Bash(rm:-rf:~/*)",
+      "Bash(sudo:*)",
+      "Bash(chmod:777:*)",
+      "Bash(chown:*)",
+      "Bash(dd:*)",
+      "Bash(mkfs:*)",
+      "Bash(:(){:|:&};:)"
+    ],
+    "additionalDirectories": [
+      "~/.scratch",
+      "~/Documents/workspace"
+    ]
+  },
+  "env": {
+    "CLAUDE_USAGE_MODE_FILE": ".scratch/.mode",
+    "CDX_DEFAULT_FLAGS": "--sandbox workspace-write --skip-git-repo-check",
+    "GCA_DEFAULT_FLAGS": "--yolo"
+  },
+  "hooks": {
+    "PreToolUse": []
+  },
+  "_notes": {
+    "permissions": "allow list is intentionally generous inside the working dir. Writes outside still prompt due to additionalDirectories scoping.",
+    "hooks": "PreToolUse hook for large-file Read interception is included as ./hooks/large-file-guard.sh but not active. To enable, add an entry under PreToolUse pointing to that script.",
+    "model": "Model not pinned. Claude Code uses default. Override per-session with --model if needed."
+  }
+}
