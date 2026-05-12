@@ -150,6 +150,10 @@ Creative:
 - `adobe-premiere-edit`, `adobe-firefly`, `nano-banana`
 - `notebooklm-research`, `video-editing-pipeline`, `adobe-creative-cloud`
 
+Obsidian / knowledge management:
+- `obsidian-markdown`, `obsidian-bases`, `json-canvas`
+- `obsidian-cli`, `defuddle`
+
 Anthropic-provided (already installed, do not duplicate):
 - `docx`, `pptx`, `xlsx`, `pdf`, `canvas-design`, `internal-comms`, `ops-analyst`, `brand-guidelines`
 

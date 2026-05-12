@@ -23,7 +23,7 @@ Public, generic, fork-and-customize. Brand placeholders in `BRANDS.md`.
 - **Tiered data access**: Tier 1 summary → Tier 2 slice → Tier 3 full read. Default Tier 1 in PEAK, Tier 2 in OFFPEAK.
 - **Time-aware modes**: PEAK (5am-2pm EST weekdays, max delegation) and OFFPEAK (everything else, more direct work allowed).
 - **Permission posture**: full auto inside the working dir, prompts only for writes outside.
-- **28 skills**: routing, marketing, ops, security, creative.
+- **33 skills**: routing, marketing, ops, security, creative, Obsidian knowledge management.
 - **Subagents**: researcher, builder, reviewer, plus Claude-side orchestrator for escalation planning.
 - **Bash + PowerShell wrappers**: `cdx` (Codex) and `gca` (Gemini) with format enforcement baked in.
 
@@ -141,7 +141,7 @@ The mode is stored at `~/.claude/.ai-routing/mode` by default. Set `AI_ROUTING_H
 │   └── ai-mode.sh / ai-mode.ps1 Global mode switcher
 ├── hooks/
 │   └── large-file-guard.sh    Optional PreToolUse hook
-└── skills/                    25 domain SOPs
+└── skills/                    33 routing and domain SOPs
 ```
 
 See `docs/PHASES.md` for the full skill index with descriptions.

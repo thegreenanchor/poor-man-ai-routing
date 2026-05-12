@@ -61,6 +61,18 @@ Session closeout is handled by `ai-session-save`: local export first, then Notio
 
 ---
 
+## Phase 5: Obsidian / knowledge management (5 skills)
+
+| Skill | Covers |
+|---|---|
+| `obsidian-markdown` | Obsidian-flavored Markdown, links, embeds, callouts, tags, properties, and note structure. |
+| `obsidian-bases` | Obsidian Bases JSON schema, formulas, filters, views, and database-like vault workflows. |
+| `json-canvas` | Obsidian Canvas `.canvas` JSON files, nodes, edges, groups, layout, and validation. |
+| `obsidian-cli` | Obsidian CLI workflows for vault automation, note creation, search, and plugin-aware operations. |
+| `defuddle` | Web article extraction and cleanup for turning pages into clean Markdown notes. |
+
+---
+
 ## Anthropic-provided (already installed; do not duplicate)
 
 These ship with Claude Code and are already available:
