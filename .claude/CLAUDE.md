@@ -135,7 +135,7 @@ Routing (always available):
 - `gemini-handoff` — Gemini prompt template, search patterns
 - `claude-usage-protocol` — token discipline SOP, anti-patterns
 - `usage-mode-awareness` — PEAK/OFFPEAK detection + thresholds
-- `obsidian-output-routing` — Obsidian vault routing matrix + page templates + stage-and-confirm protocol
+- `obsidian-output-routing` — Obsidian vault routing matrix + page templates + stage-and-confirm protocol + pre-write duplicate checks
 
 Marketing / business:
 - `seo-audit`, `ga4-reporting`, `gsc-ops`, `meta-ads-api`

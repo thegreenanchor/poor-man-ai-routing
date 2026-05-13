@@ -4,6 +4,13 @@ All notable changes to this project are documented here. Format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning follows
 [SemVer](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- Updated repository descriptions and session-closeout wording for Obsidian-first routing.
+- Added an Obsidian pre-write duplicate check so approval does not bypass dedupe.
+
 ## [1.1.0] - 2026-05-07
 
 ### Changed
@@ -12,7 +19,7 @@ All notable changes to this project are documented here. Format follows
 - Reframed Claude as an escalation/review lane for strategy, scoring rubrics, precision code/content review, and final QA.
 - Kept Gemini as the research, search, OSINT, Google ecosystem, large-doc, and multimodal discovery lane.
 - Updated `cx` and `ai-mode` help text to describe Codex-primary mode as the default workflow.
-- Added one-command session closeout: `ai-session-save` exports local logs and routes the Notion-ready log to Notion when a connector is available.
+- Added one-command session closeout: `ai-session-save` exports local logs for downstream session logging.
 
 ## [1.0.0] - 2026-05-07
 

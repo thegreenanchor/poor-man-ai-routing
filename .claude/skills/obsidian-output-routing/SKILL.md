@@ -1,6 +1,6 @@
 ---
 name: obsidian-output-routing
-description: Routes every non-trivial deliverable to the correct destination in the Obsidian wiki vault. Defines the routing matrix, page type templates, stage-and-confirm protocol, and brand tagging rules. Use whenever Claude produces an output that should be written to the vault (research, drafts, reports, SOPs, project deliverables, captures, session logs). Always consult before any vault write.
+description: Routes every non-trivial deliverable to the correct destination in the Obsidian wiki vault. Defines the routing matrix, page type templates, stage-and-confirm protocol, pre-write duplicate checks, and brand tagging rules. Use whenever Claude produces an output that should be written to the vault (research, drafts, reports, SOPs, project deliverables, captures, session logs). Always consult before any vault write.
 ---
 
 # Obsidian Output Routing

@@ -13,8 +13,8 @@ $ErrorActionPreference = 'Stop'
 
 if ($Help) {
   Write-Host "Usage: ai-session-save [-SessionId <codex-session-id>] [-Title <title>] [-OutputRoot <path>]"
-  Write-Host "Exports raw transcript, structured session log, and Notion-ready session log."
-  Write-Host "In a connected Codex session, routing rules should also push the Notion-ready log to Notion."
+  Write-Host "Exports raw transcript, structured session log, and Obsidian-ready session log."
+  Write-Host "In a connected Codex session, routing rules should also write the Obsidian-ready log to the vault."
   exit 0
 }
 
@@ -141,7 +141,7 @@ New-Item -ItemType Directory -Path $outDir -Force | Out-Null
 $rawJsonl = Join-Path $outDir "raw-transcript.jsonl"
 $rawMd = Join-Path $outDir "raw-transcript.md"
 $sessionLog = Join-Path $outDir "session-log.md"
-$notionReady = Join-Path $outDir "notion-ready.md"
+$obsidianReady = Join-Path $outDir "obsidian-ready.md"
 
 Copy-Item -LiteralPath $sessionFile.FullName -Destination $rawJsonl -Force
 
@@ -185,7 +185,7 @@ $promptLines = @($userPrompts | Select-Object -First 20 | ForEach-Object { "- " 
 if ($promptLines.Count -eq 0) { $promptLines = @("- None detected") }
 
 $fileLines = if ($fileList) { @($fileList | ForEach-Object { "- $_" }) } else { @("- None detected") }
-$notionFileLines = if ($fileList) { @($fileList | ForEach-Object { "- $_" }) } else { @("- No files detected from transcript metadata.") }
+$obsidianFileLines = if ($fileList) { @($fileList | ForEach-Object { "- $_" }) } else { @("- No files detected from transcript metadata.") }
 
 $logLines = New-Object System.Collections.Generic.List[string]
 $logLines.Add("# AI Session Log - " + $started.ToString("yyyy-MM-dd HH:mm"))
@@ -230,58 +230,58 @@ $logLines.Add("")
 $logLines.Add("- Raw JSONL: ``$rawJsonl``")
 $logLines.Add("- Readable transcript: ``$rawMd``")
 $logLines.Add("- Structured log: ``$sessionLog``")
-$logLines.Add("- Notion-ready log: ``$notionReady``")
+$logLines.Add("- Obsidian-ready log: ``$obsidianReady``")
 Set-Content -LiteralPath $sessionLog -Value $logLines -Encoding UTF8
 
-$notionLines = New-Object System.Collections.Generic.List[string]
-$notionLines.Add("---")
-$notionLines.Add("Date: " + $started.ToString("yyyy-MM-dd"))
-$notionLines.Add("AI: Codex")
-$notionLines.Add("Mode: codex-primary")
-$notionLines.Add("Session ID: $id")
-$notionLines.Add("Project: $slug")
-$notionLines.Add("Status: Logged")
-$notionLines.Add("Working Directory: $cwd")
-$notionLines.Add("Raw Transcript: $rawJsonl")
-$notionLines.Add("---")
-$notionLines.Add("")
-$notionLines.Add("# AI Session Log - " + $started.ToString("yyyy-MM-dd HH:mm"))
-$notionLines.Add("")
-$notionLines.Add("## Goal")
-$notionLines.Add("")
-$notionLines.Add($Title)
-$notionLines.Add("")
-$notionLines.Add("## Summary")
-$notionLines.Add("")
-$notionLines.Add($summaryText)
-$notionLines.Add("")
-$notionLines.Add("## Decisions Made")
-$notionLines.Add("")
-$notionLines.Add("- See transcript for exact wording and context.")
-$notionLines.Add("")
-$notionLines.Add("## Files / Artifacts")
-$notionLines.Add("")
-$notionFileLines | ForEach-Object { $notionLines.Add($_) }
-$notionLines.Add("")
-$notionLines.Add("## Commands / Tool Activity")
-$notionLines.Add("")
-$notionLines.Add("- Captured $commandCount tool or command events.")
-$notionLines.Add("")
-$notionLines.Add("## Next Actions")
-$notionLines.Add("")
-$notionLines.Add("- Review session-log.md and raw transcript if this session needs follow-up.")
-$notionLines.Add("")
-$notionLines.Add("## Local Paths")
-$notionLines.Add("")
-$notionLines.Add("- Raw JSONL: ``$rawJsonl``")
-$notionLines.Add("- Readable Transcript: ``$rawMd``")
-$notionLines.Add("- Structured Session Log: ``$sessionLog``")
-Set-Content -LiteralPath $notionReady -Value $notionLines -Encoding UTF8
+$obsidianLines = New-Object System.Collections.Generic.List[string]
+$obsidianLines.Add("---")
+$obsidianLines.Add("type: log")
+$obsidianLines.Add("date: " + $started.ToString("yyyy-MM-dd"))
+$obsidianLines.Add("session-id: $id")
+$obsidianLines.Add("agents: [Codex]")
+$obsidianLines.Add("domain: CROSS")
+$obsidianLines.Add("tags: [log]")
+$obsidianLines.Add("working-directory: $cwd")
+$obsidianLines.Add("raw-transcript: $rawJsonl")
+$obsidianLines.Add("---")
+$obsidianLines.Add("")
+$obsidianLines.Add("# AI Session Log - " + $started.ToString("yyyy-MM-dd HH:mm"))
+$obsidianLines.Add("")
+$obsidianLines.Add("## Summary")
+$obsidianLines.Add("")
+$obsidianLines.Add($summaryText)
+$obsidianLines.Add("")
+$obsidianLines.Add("## Work Done")
+$obsidianLines.Add("")
+$obsidianLines.Add($Title)
+$obsidianLines.Add("")
+$obsidianLines.Add("## Decisions Made")
+$obsidianLines.Add("")
+$obsidianLines.Add("- See transcript for exact wording and context.")
+$obsidianLines.Add("")
+$obsidianLines.Add("## Artifacts")
+$obsidianLines.Add("")
+$obsidianFileLines | ForEach-Object { $obsidianLines.Add($_) }
+$obsidianLines.Add("")
+$obsidianLines.Add("## Commands / Tool Activity")
+$obsidianLines.Add("")
+$obsidianLines.Add("- Captured $commandCount tool or command events.")
+$obsidianLines.Add("")
+$obsidianLines.Add("## Next Actions")
+$obsidianLines.Add("")
+$obsidianLines.Add("- Review session-log.md and raw transcript if this session needs follow-up.")
+$obsidianLines.Add("")
+$obsidianLines.Add("## Local Paths")
+$obsidianLines.Add("")
+$obsidianLines.Add("- Raw JSONL: ``$rawJsonl``")
+$obsidianLines.Add("- Readable Transcript: ``$rawMd``")
+$obsidianLines.Add("- Structured Session Log: ``$sessionLog``")
+Set-Content -LiteralPath $obsidianReady -Value $obsidianLines -Encoding UTF8
 
 Write-Host "AI session saved:"
 Write-Host "  Folder: $outDir"
 Write-Host "  Raw JSONL: $rawJsonl"
 Write-Host "  Raw transcript: $rawMd"
 Write-Host "  Session log: $sessionLog"
-Write-Host "  Notion-ready: $notionReady"
-Write-Host "  Notion action: create a Notion page from notion-ready.md when a Notion connector is available."
+Write-Host "  Obsidian-ready: $obsidianReady"
+Write-Host "  Obsidian action: write obsidian-ready.md to Wiki/Logs/Session-YYYY-MM-DD.md when the vault is available."

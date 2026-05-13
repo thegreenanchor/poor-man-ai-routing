@@ -1,6 +1,6 @@
 # Poor Man AI Routing
 
-A global Codex-primary routing configuration that keeps Codex as the daily workbench, routes research to Gemini CLI, and reserves Claude Code for higher-thinking review, scoring rubrics, strategy, and precision QA.
+A global Codex-primary routing configuration that keeps Codex as the daily workbench, routes research to Gemini CLI, reserves Claude Code for higher-thinking review, and writes durable outputs to an Obsidian wiki with stage-and-confirm plus duplicate checks.
 
 Public, generic, fork-and-customize. Brand placeholders in `BRANDS.md`.
 
@@ -158,7 +158,7 @@ See `docs/PHASES.md` for the full skill index with descriptions.
 - `ai-mode status` → show global routing mode
 - `ai-mode codex` → switch to Codex-primary mode
 - `ai-mode claude` → switch to Claude escalation/review mode
-- `ai-session-save` → export the latest Codex session and, when a Notion connector is available, create the Notion session-log page
+- `ai-session-save` → export the latest Codex session and route the closeout log to the Obsidian wiki
 
 ### Wrappers
 
@@ -193,12 +193,12 @@ Session logs are written to:
 
 When `ai-session-save` is entered inside a connected Codex session, the routing instructions treat it as a full closeout command:
 
-- save the local raw/structured/Notion-ready files
-- read the generated `notion-ready.md`
-- create the Notion session-log page
-- return both the local folder path and the Notion page URL
+- save the local raw, structured, and Obsidian-ready files
+- read the generated `obsidian-ready.md`
+- write the session log to `Wiki/Logs/Session-YYYY-MM-DD.md`
+- return both the local folder path and the vault file path
 
-If no Notion connector is available, the local export still completes and the Notion push is skipped with a clear note.
+If the vault path is unavailable, the local export still completes and the vault write is skipped with a clear note.
 
 ### Subagents
 

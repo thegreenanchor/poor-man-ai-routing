@@ -198,4 +198,4 @@ End a Codex session with:
 ai-session-save
 ```
 
-In connected Codex sessions, this saves local session logs and creates the Notion session-log page in one closeout step.
+In connected Codex sessions, this saves local session logs and writes the Obsidian wiki session log in one closeout step.

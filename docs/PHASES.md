@@ -14,7 +14,7 @@ All skills live at `~/.claude/skills/<name>/SKILL.md`. Claude Code auto-loads th
 | `claude-usage-protocol` | Claude escalation discipline. Anti-patterns. Tier tables. |
 | `usage-mode-awareness` | PEAK/OFFPEAK detection logic + threshold table. |
 
-Session closeout is handled by `ai-session-save`: local export first, then Notion page creation when a Notion connector is available.
+Session closeout is handled by `ai-session-save`: local export first, then Obsidian wiki log creation when the vault is available.
 
 ---
 
@@ -61,10 +61,11 @@ Session closeout is handled by `ai-session-save`: local export first, then Notio
 
 ---
 
-## Phase 5: Obsidian / knowledge management (5 skills)
+## Phase 5: Obsidian / knowledge management (6 skills)
 
 | Skill | Covers |
 |---|---|
+| `obsidian-output-routing` | Vault routing matrix, page templates, stage-and-confirm protocol, and pre-write duplicate checks. |
 | `obsidian-markdown` | Obsidian-flavored Markdown, links, embeds, callouts, tags, properties, and note structure. |
 | `obsidian-bases` | Obsidian Bases JSON schema, formulas, filters, views, and database-like vault workflows. |
 | `json-canvas` | Obsidian Canvas `.canvas` JSON files, nodes, edges, groups, layout, and validation. |
