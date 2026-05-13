@@ -19,12 +19,24 @@ Secure files: `Secure/`
 1. Claude drafts output to `./.scratch/obsidian-stage/<topic>-<date>.md` with frontmatter + body
 2. Claude shows: destination path, page type, brand, and 2-sentence preview
 3. Claude asks: `Write to Wiki/<folder>/<page>.md? (yes / no / change path / edit)`
-4. On `yes`: write the file directly to the vault path using the Write tool
+4. On `yes`: run the Pre-Write Duplicate Check below, then write or merge as appropriate
 5. On `no`: stays in scratch; user can hand back with edits
 
 Override commands:
 - `direct-write` -> skip staging this session
 - `stage` -> return to default
+
+---
+
+## Pre-Write Duplicate Check
+
+Approval permits writing, but never bypasses duplicate detection. Before moving staged content into the vault or creating any new wiki page:
+
+1. Search `Wiki/index.md` for the same or similar title.
+2. Search `Wiki/` for matching source URLs, aliases, names, companies, projects, and distinctive claims.
+3. Compare relevant frontmatter fields such as `source`, `url`, `aliases`, `company`, `project`, `domain`, and `date`.
+4. If a likely duplicate exists, merge useful new information into the canonical page instead of creating a new page.
+5. Record the merge or new-page decision in `Wiki/log.md`.
 
 ---
 
