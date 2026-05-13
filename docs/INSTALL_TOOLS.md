@@ -177,14 +177,14 @@ Run the routing system installer (see top-level `README.md`):
 
 It verifies both CLIs are installed and reports back.
 
-After installation, start normal Codex-primary work with:
+After installation, start a Codex-led session with:
 
 ```bash
 ai-mode codex
 cx
 ```
 
-When you intentionally want Claude-first escalation or review:
+When you want Claude to orchestrate the session:
 
 ```bash
 ai-mode claude

@@ -1,4 +1,4 @@
-# cx.ps1 - Codex-primary launcher for PowerShell
+# cx.ps1 - Codex-led launcher for PowerShell
 
 param(
   [Parameter(Position=0, ValueFromRemainingArguments=$true)]
@@ -7,8 +7,8 @@ param(
 
 if ($Args.Count -gt 0 -and $Args[0] -in @("-h", "--help", "help")) {
   Write-Host "Usage: cx [task]"
-  Write-Host "Starts Codex as the primary routing agent."
-  Write-Host "Run 'ai-mode codex' to make Codex-primary mode explicit."
+  Write-Host "Starts a Codex-led session. The entrypoint wins over the mode file."
+  Write-Host "Codex still routes discovery to Gemini and judgment-heavy decisions to Claude."
   exit 0
 }
 
@@ -30,12 +30,15 @@ if (Test-Path -LiteralPath $ModeFile) {
 }
 
 $BasePrompt = Get-Content -LiteralPath $PromptFile -Raw
-$UserPrompt = if ($Args.Count -gt 0) { $Args -join " " } else { "Start a Codex-primary interactive session in this workspace. Ask what to work on next if no task is already clear." }
+$UserPrompt = if ($Args.Count -gt 0) { $Args -join " " } else { "Start a Codex-led interactive session in this workspace. Ask what to work on next if no task is already clear." }
 
 $Wrapped = @"
 $BasePrompt
 
 GLOBAL ROUTING MODE: $Mode
+
+SESSION ENTRYPOINT: Codex via cx
+SESSION ROLE: Codex is the primary orchestrator/executor for this session. Use Gemini for discovery work. Escalate to Claude whenever judgment is needed, including strategy decisions, ambiguous tradeoffs, scoring rubrics, precision review, final QA for brand-facing work, brand voice/polish where quality matters, conflicts between sources/tool outputs, high-stakes judgment, and similar cases.
 
 USER TASK:
 $UserPrompt

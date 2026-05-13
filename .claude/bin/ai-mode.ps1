@@ -34,13 +34,13 @@ switch ($Command.ToLowerInvariant()) {
     Ensure-StateDir
     Set-Content -LiteralPath $ModeFile -Value "claude" -NoNewline
     Write-Host "AI routing mode: claude"
-    Write-Host "Use Claude for deliberate escalation/review. Codex remains available through cx/cdx."
+    Write-Host "Prefer Claude-led orchestration. Starting via cx still creates a Codex-led session."
   }
   "codex" {
     Ensure-StateDir
     Set-Content -LiteralPath $ModeFile -Value "codex" -NoNewline
     Write-Host "AI routing mode: codex"
-    Write-Host "Start normal work with: cx"
+    Write-Host "Prefer Codex-led sessions. Start work with: cx"
   }
   "status" {
     $Mode = Read-Mode
@@ -49,8 +49,8 @@ switch ($Command.ToLowerInvariant()) {
   }
   { $_ -in @("-h", "--help", "help") } {
     Write-Host "Usage: ai-mode [status|codex|claude]"
-    Write-Host "  ai-mode codex   Switch globally to Codex-primary mode"
-    Write-Host "  ai-mode claude  Switch globally to Claude escalation/review mode"
+    Write-Host "  ai-mode codex   Prefer Codex-led sessions"
+    Write-Host "  ai-mode claude  Prefer Claude-led orchestration sessions"
     Write-Host "  ai-mode status  Show the current mode"
   }
   default {

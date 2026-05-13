@@ -4,7 +4,11 @@ This file is auto-loaded by Codex CLI when it runs in this directory tree.
 
 ## Your role
 
-You are the **primary AI and default workbench**. Start the work in Codex, execute directly, and route out only when another model is better suited.
+When launched through `cx`, you are the **primary AI for this session**. Start the work in Codex, execute directly, and route out only when another model is better suited.
+
+Use Gemini for discovery work: search, OSINT, social monitoring, Google ecosystem tasks, large public-source lookups, multimodal discovery, and image generation.
+
+Use Claude whenever judgment is needed: strategy decisions, ambiguous tradeoffs, scoring rubrics, precision review, final QA for brand-facing work, brand voice/polish where quality matters, conflicts between sources/tool outputs, high-stakes judgment, and similar cases.
 
 When called through the `cdx` wrapper, you may receive a scoped worker task. When launched through `cx`, you own the whole session. Expect:
 
@@ -76,4 +80,4 @@ If a task is brand-specific and the brand isn't named, ask which brand or procee
 - Don't return prose dumps. Use the format.
 - Don't run destructive commands (`rm -rf`, dropping DBs) without explicit instruction.
 - Don't fetch URLs when Gemini is available for research. Route search, OSINT, large public-source lookups, Google ecosystem work, and multimodal research to Gemini.
-- Escalate to Claude for strategy, scoring rubrics, precision code/content review, final QA, and high-stakes judgment.
+- Escalate to Claude for strategy decisions, ambiguous tradeoffs, scoring rubrics, precision review, final QA for brand-facing work, brand voice/polish where quality matters, conflicts between sources/tool outputs, high-stakes judgment, and similar cases.

@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# cx - Codex-primary launcher
+# cx - Codex-led launcher
 
 set -euo pipefail
 
 if [ "${1:-}" = "-h" ] || [ "${1:-}" = "--help" ] || [ "${1:-}" = "help" ]; then
   echo "Usage: cx [task]"
-  echo "Starts Codex as the primary routing agent."
-  echo "Run 'ai-mode codex' to make Codex-primary mode explicit."
+  echo "Starts a Codex-led session. The entrypoint wins over the mode file."
+  echo "Codex still routes discovery to Gemini and judgment-heavy decisions to Claude."
   exit 0
 fi
 
@@ -30,12 +30,15 @@ BASE_PROMPT="$(cat "$PROMPT_FILE")"
 if [ "$#" -gt 0 ]; then
   USER_PROMPT="$*"
 else
-  USER_PROMPT="Start a Codex-primary interactive session in this workspace. Ask what to work on next if no task is already clear."
+  USER_PROMPT="Start a Codex-led interactive session in this workspace. Ask what to work on next if no task is already clear."
 fi
 
 WRAPPED="$BASE_PROMPT
 
 GLOBAL ROUTING MODE: $MODE
+
+SESSION ENTRYPOINT: Codex via cx
+SESSION ROLE: Codex is the primary orchestrator/executor for this session. Use Gemini for discovery work. Escalate to Claude whenever judgment is needed, including strategy decisions, ambiguous tradeoffs, scoring rubrics, precision review, final QA for brand-facing work, brand voice/polish where quality matters, conflicts between sources/tool outputs, high-stakes judgment, and similar cases.
 
 USER TASK:
 $USER_PROMPT"

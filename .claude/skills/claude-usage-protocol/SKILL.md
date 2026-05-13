@@ -1,23 +1,23 @@
 ---
 name: claude-usage-protocol
-description: The detailed Claude escalation SOP. Use when Codex escalates work to Claude for strategy, scoring, review, or precision QA. Defines tiered access, scratchpad rules, and anti-patterns that burn Claude usage.
+description: The detailed Claude judgment escalation SOP. Use when Codex or Claude-led routing needs strategy, ambiguous tradeoff handling, scoring, review, final QA, brand polish, source/tool conflict resolution, or high-stakes judgment. Defines tiered access, scratchpad rules, and anti-patterns that burn Claude usage.
 ---
 
 # Claude Usage Protocol
 
 ## Principle
 
-Claude burns the most expensive tokens in the system. Every line read, every tool result, every retry costs. The protocol is: **Claude touches as little as possible, as briefly as possible, only for decisions only Claude can make.**
+Claude burns the most expensive tokens in the system. Every line read, every tool result, every retry costs. The protocol is: **Claude touches as little as possible, as briefly as possible, but must be used whenever judgment is needed.**
 
-Codex is the default workbench. Gemini is the discovery layer. Everything that does not require Claude-level judgment stays with Codex or Gemini.
+The session entrypoint leads. `cx` creates a Codex-led session; Claude Code creates a Claude-led session. Gemini is the discovery layer. Everything that does not require Claude-level judgment stays with the session lead, Codex, or Gemini.
 
 ## The 8 rules
 
-### Rule 1 — Default to Codex/Gemini
+### Rule 1 — Entrypoint leads; Claude judges
 
-- Tasks needing execution tool calls: keep in Codex.
+- Tasks needing execution tool calls: keep in Codex or the current session lead.
 - Tasks involving search, web fetch, OSINT, social, or large doc scan: hand to Gemini.
-- Claude executes directly only for strategy, scoring rubrics, precision review, final QA, or high-stakes judgment.
+- Claude is required for strategy decisions, ambiguous tradeoffs, scoring rubrics, precision review, final QA for brand-facing work, brand voice/polish where quality matters, conflicts between sources/tool outputs, high-stakes judgment, and similar cases.
 
 ### Rule 2 — Three access tiers
 
@@ -57,9 +57,9 @@ The `EVIDENCE` block carries the literal bytes Claude needs. No re-read required
 - If Gemini returns sources with URLs, do not re-fetch unless user flags suspicion.
 - If a subagent reports done, trust the STATUS unless EVIDENCE contradicts.
 
-### Rule 6 — Codex-first for multi-step work
+### Rule 6 — Delegate multi-step work from the current lead
 
-- Tasks needing 5+ tool calls: send back to Codex or a scoped subagent.
+- Tasks needing 5+ tool calls: keep in Codex if Codex-led, or send to Codex/a scoped subagent if Claude-led.
 - Subagents have their own context window. The Claude escalation thread stays clean.
 - Subagent returns the same compressed format.
 
@@ -131,7 +131,7 @@ If you can't answer all 5 in 10 seconds, the task needs more decomposition first
 
 ## Usage savings, ranked by leverage
 
-1. **Start in Codex and use Gemini for discovery** (~70% savings on execution-heavy work).
+1. **Use the right entrypoint and use Gemini for discovery** (~70% savings on execution-heavy work).
 2. **Apply line caps + Tier 1 default** (~30% savings on read-heavy work).
 3. **Spawn subagents for multi-step** (~40% savings on complex tasks; main thread stays cheap).
 4. **Tighten final reply** (~10% savings, every reply).

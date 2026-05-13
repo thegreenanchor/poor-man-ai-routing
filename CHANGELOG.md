@@ -10,15 +10,16 @@ All notable changes to this project are documented here. Format follows
 
 - Updated repository descriptions and session-closeout wording for Obsidian-first routing.
 - Added an Obsidian pre-write duplicate check so approval does not bypass dedupe.
+- Aligned routing rules around entrypoint-led ownership with mandatory Claude judgment escalation.
 
 ## [1.1.0] - 2026-05-07
 
 ### Changed
 
-- Made Codex-primary routing the normal daily workflow.
+- Made Codex-led sessions available through the `cx` launcher.
 - Reframed Claude as an escalation/review lane for strategy, scoring rubrics, precision code/content review, and final QA.
 - Kept Gemini as the research, search, OSINT, Google ecosystem, large-doc, and multimodal discovery lane.
-- Updated `cx` and `ai-mode` help text to describe Codex-primary mode as the default workflow.
+- Updated `cx` and `ai-mode` help text to describe Codex-led mode.
 - Added one-command session closeout: `ai-session-save` exports local logs for downstream session logging.
 
 ## [1.0.0] - 2026-05-07
@@ -34,7 +35,7 @@ All notable changes to this project are documented here. Format follows
 - Three-tier data access (summary / slice / full read) with mode-aware caps.
 - Compressed handoff format enforced by `cdx` and `gca` wrappers.
 - Stage-and-confirm Notion delivery via the `notion-output-routing` skill.
-- Codex-primary mode: `ai-mode codex` and `cx` wrappers.
+- Codex-led mode: `ai-mode codex` and `cx` wrappers.
 - Cross-platform install scripts (`INSTALL.ps1`, `INSTALL.sh`).
 - Optional PreToolUse hook (`large-file-guard.sh`) for hard line caps.
 - Brand customization template at `BRANDS.md`.

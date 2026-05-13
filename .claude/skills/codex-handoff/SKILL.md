@@ -7,7 +7,7 @@ description: How to use Codex as the primary workbench or as a scoped worker via
 
 ## When to use Codex
 
-- Default daily starting point via `cx`.
+- Codex-led sessions via `cx`.
 - Writing new code (any language).
 - Editing existing code (single file or repo-wide).
 - Multi-file scans (find all callers, find all references, audit imports).
@@ -21,7 +21,7 @@ description: How to use Codex as the primary workbench or as a scoped worker via
 - Web research → Gemini.
 - Image generation → Gemini (Nano Banana).
 - Final brand-voice polish when precision matters → Claude review.
-- Strategy, scoring rubrics, and high-stakes judgment → Claude escalation.
+- Strategy decisions, ambiguous tradeoffs, scoring rubrics, precision review, final QA for brand-facing work, brand voice/polish where quality matters, conflicts between sources/tool outputs, high-stakes judgment, and similar cases → Claude escalation.
 - Web research, OSINT, Google ecosystem, large public-source lookups → Gemini.
 
 ## The scoped-task template
@@ -44,7 +44,7 @@ RETURN: STATUS + SUMMARY + EVIDENCE (verbatim diffs, max 10 lines each) + ARTIFA
 ## Calling Codex
 
 ```bash
-# Daily primary session
+# Codex-led session
 cx
 
 # Scoped worker task
@@ -134,7 +134,7 @@ Do NOT re-read files Codex already showed in EVIDENCE. The slice is canonical.
 - **Multiple unrelated goals in one call**: split into two calls.
 - **Sending raw user prose**: translate it into the template first. Faster output, less rework.
 - **Asking Codex to fetch URLs**: route to Gemini, pass results in.
-- **Skipping Claude review for high-stakes final copy/code**: escalate when precision matters.
+- **Skipping Claude review for judgment-heavy work**: escalate for strategy, ambiguous tradeoffs, scoring, precision review, final QA, brand polish, source/tool conflicts, and high-stakes judgment.
 
 ## Mode awareness
 

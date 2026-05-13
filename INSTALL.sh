@@ -96,6 +96,6 @@ echo
 echo "Next steps:"
 echo "  1. Open a new terminal (or 'source $SHELL_RC')."
 echo "  2. Verify: 'ai-mode status', 'cx --help', 'cdx --help', and 'gca --help'"
-echo "  3. Run 'ai-mode codex' then 'cx' to start Codex-primary work."
+echo "  3. Start in 'cx' for a Codex-led session, or Claude Code for a Claude-led session."
 echo
 echo "Docs: $SCRIPT_DIR/docs/PHASES.md"

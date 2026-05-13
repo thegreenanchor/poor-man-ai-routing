@@ -1,6 +1,6 @@
 # Poor Man AI Routing
 
-A global Codex-primary routing configuration that keeps Codex as the daily workbench, routes research to Gemini CLI, reserves Claude Code for higher-thinking review, and writes durable outputs to an Obsidian wiki with stage-and-confirm plus duplicate checks.
+A global entrypoint-led routing configuration for Codex, Claude Code, and Gemini CLI. The AI you start in leads the session: Codex leads `cx` sessions, Claude leads Claude Code sessions, Gemini handles discovery, and Claude is always used for judgment-heavy decisions.
 
 Public, generic, fork-and-customize. Brand placeholders in `BRANDS.md`.
 
@@ -8,18 +8,18 @@ Public, generic, fork-and-customize. Brand placeholders in `BRANDS.md`.
 
 ## TL;DR
 
-- **Codex CLI** is where work starts: code, files, docs, scripts, builds, verification, and normal synthesis.
-- **Gemini CLI** handles research, search, OSINT, and source gathering.
-- **Claude Code** handles escalation: higher-thinking tasks, scoring rubrics, content/code review, strategy, and final QA.
-- Daily start: `ai-mode codex`, then `cx`.
-- Use `ai-mode claude` only when you intentionally want Claude-first escalation/review.
+- **Codex-started sessions** (`cx`) make Codex the main orchestrator/executor.
+- **Claude-started sessions** make Claude the orchestrator/synthesizer.
+- **Gemini CLI** handles research, search, OSINT, Google ecosystem work, large public-source scans, multimodal discovery, and image generation.
+- **Claude judgment escalation is mandatory** for strategy decisions, ambiguous tradeoffs, scoring rubrics, precision review, final QA for brand-facing work, brand voice/polish where quality matters, conflicts between sources/tool outputs, high-stakes judgment, and similar cases.
+- Use `ai-mode` as a preference/status helper; once a session starts, the entrypoint wins.
 
 ---
 
 ## What this gives you
 
-- **Three-AI routing**: Codex starts and executes. Gemini researches. Claude reviews and handles precision escalation.
-- **Codex-primary workflow**: switch globally to Codex with `ai-mode codex` and start work with `cx`.
+- **Three-AI routing**: the entrypoint leads, Gemini researches, and Claude handles judgment escalation.
+- **Entrypoint-led workflow**: start in `cx` when you want Codex to lead; start in Claude Code when you want Claude to orchestrate.
 - **Tiered data access**: Tier 1 summary → Tier 2 slice → Tier 3 full read. Default Tier 1 in PEAK, Tier 2 in OFFPEAK.
 - **Time-aware modes**: PEAK (5am-2pm EST weekdays, max delegation) and OFFPEAK (everything else, more direct work allowed).
 - **Permission posture**: full auto inside the working dir, prompts only for writes outside.
@@ -94,29 +94,25 @@ cx "Inspect this folder and report the current routing mode. Do not edit files."
 gca "TOPIC: What is 2+2? TIER: 1."
 ```
 
-### Step 4: Start Codex-primary work
+### Step 4: Start Work From The Right Entrypoint
 
-Codex picks up `AGENTS.md` and `CODEX_PRIMARY.md`. Gemini picks up `GEMINI.md`. Claude picks up `CLAUDE.md` when you deliberately escalate.
+Codex picks up `AGENTS.md` and `CODEX_PRIMARY.md`. Gemini picks up `GEMINI.md`. Claude picks up `CLAUDE.md` when you start in Claude Code or when a session escalates for judgment.
 
-Set Codex as the global routing mode:
+Start in Codex when you want Codex to lead execution:
 
 ```bash
 ai-mode codex
-```
-
-Then start work:
-
-```bash
 cx
 ```
 
-You do not type `cx` before every prompt. Use it once to start a new Codex-primary session. When you intentionally need Claude-first review/escalation:
+Start in Claude Code when you want Claude to orchestrate:
 
 ```bash
 ai-mode claude
+claude
 ```
 
-The mode is stored at `~/.claude/.ai-routing/mode` by default. Set `AI_ROUTING_HOME` if you want to keep that state somewhere else.
+You do not type `cx` before every prompt. Use it once to start a Codex-led session. The mode file is stored at `~/.claude/.ai-routing/mode` by default, but the session entrypoint is authoritative if it conflicts with the mode file.
 
 ---
 
@@ -125,7 +121,7 @@ The mode is stored at `~/.claude/.ai-routing/mode` by default. Set `AI_ROUTING_H
 ```
 ~/.claude/
 ├── CLAUDE.md                  Claude escalation/review rules
-├── CODEX_PRIMARY.md           Codex-primary daily routing instructions
+├── CODEX_PRIMARY.md           Codex-started session instructions
 ├── settings.json              Permissions, env, hooks
 ├── AGENTS.md                  Codex orientation
 ├── GEMINI.md                  Gemini orientation
@@ -136,7 +132,7 @@ The mode is stored at `~/.claude/.ai-routing/mode` by default. Set `AI_ROUTING_H
 │   └── reviewer.md            Precision review / final QA check
 ├── bin/
 │   ├── cdx.sh / cdx.ps1       Codex wrapper
-│   ├── cx.sh / cx.ps1         Codex-primary launcher
+│   ├── cx.sh / cx.ps1         Codex-led session launcher
 │   ├── gca.sh / gca.ps1       Gemini wrapper
 │   └── ai-mode.sh / ai-mode.ps1 Global mode switcher
 ├── hooks/
@@ -156,8 +152,8 @@ See `docs/PHASES.md` for the full skill index with descriptions.
 - `/offpeak` → force OFFPEAK posture
 - `/auto` → re-detect from clock
 - `ai-mode status` → show global routing mode
-- `ai-mode codex` → switch to Codex-primary mode
-- `ai-mode claude` → switch to Claude escalation/review mode
+- `ai-mode codex` → prefer Codex-led sessions
+- `ai-mode claude` → prefer Claude-led orchestration sessions
 - `ai-session-save` → export the latest Codex session and route the closeout log to the Obsidian wiki
 
 ### Wrappers
@@ -169,7 +165,7 @@ FILES IN SCOPE: ...
 SUCCESS: ...
 RETURN: STATUS + SUMMARY + EVIDENCE."
 
-# Codex-primary daily mode
+# Codex-led session
 ai-mode codex
 cx
 cx "Fix the failing tests and summarize what changed."
@@ -254,7 +250,7 @@ For partial updates (one skill), just copy that skill's directory.
 |---|---|
 | `cdx: command not found` | PATH not picked up. Open new shell or `source ~/.bashrc` / `~/.zshrc`. |
 | `cx: command not found` | Re-run the installer and open a new shell; verify `~/.claude/bin` is on PATH. |
-| Wrong routing mode | Run `ai-mode status`, then `ai-mode codex` or `ai-mode claude`. |
+| Unexpected routing behavior | Check which entrypoint started the session, then run `ai-mode status` if the wrapper message looks stale. |
 | `codex: command not found` | Codex not installed. See `docs/INSTALL_TOOLS.md`. |
 | Hooks not firing | Hooks must be enabled per session in `settings.json`. Default is off. |
 | Mode always PEAK | DST not being applied. Use `TZ="America/New_York"` env or `/auto` override. |

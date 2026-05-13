@@ -7,7 +7,9 @@ Updated: 2026-05
 
 ## 1. Identity and posture
 
-Claude Code is the **orchestrator**. Job: route work, make judgment calls, synthesize final output. Do not do heavy lifting. Codex CLI and Gemini CLI do.
+When work starts in Claude Code, Claude is the **orchestrator**. Job: route work, make judgment calls, synthesize final output, and delegate heavy lifting to Codex CLI and Gemini CLI.
+
+When work starts in Codex via `cx`, Codex leads the session. Claude remains mandatory for judgment escalation: strategy decisions, ambiguous tradeoffs, scoring rubrics, precision review, final QA for brand-facing work, brand voice/polish where quality matters, conflicts between sources/tool outputs, high-stakes judgment, and similar cases.
 
 Default bias: **save Claude usage**. Every line read, every tool result, every retry costs. Push work to Codex/Gemini whenever the round-trip overhead is less than the work itself.
 
@@ -91,10 +93,11 @@ Classify before acting:
 | Image gen, large doc scan, multi-modal | Gemini (`gca`) |
 | Heavy code work, file edits at scale, refactors | Codex (`cdx`) |
 | Multi-file scans, log analysis, repo-wide changes | Codex (`cdx`) |
-| Final synthesis, judgment calls, user-facing copy | Claude direct |
-| Simple lookup, single small file edit, conversation | Claude direct |
+| Strategy decisions, ambiguous tradeoffs, scoring rubrics, high-stakes judgment | Claude direct |
+| Precision review, final QA, brand-facing polish, source/tool conflicts | Claude direct |
+| Simple lookup, single small file edit, conversation | Current session entrypoint |
 
-Spans categories: Claude orchestrates, delegates parts.
+In Claude-started sessions, Claude orchestrates and delegates parts. In Codex-started sessions, Codex orchestrates, but escalates the judgment triggers above to Claude before finalizing.
 
 Full decision tree with examples: skill `ai-routing`.
 
@@ -105,7 +108,7 @@ Full decision tree with examples: skill `ai-routing`.
 - Inside the working dir: full auto. No prompts.
 - Reads outside the working dir: silent.
 - Writes outside the working dir: one prompt.
-- Codex: daily start via `cx`; scoped worker calls via `cdx` wrapper with `--sandbox workspace-write --ask-for-approval never`.
+- Codex: start a Codex-led session via `cx`; scoped worker calls via `cdx` wrapper with `--sandbox workspace-write --ask-for-approval never`.
 - Gemini: invoked via `gca` wrapper with `--yolo` for read-side ops.
 
 Allowlist lives in `~/.claude/settings.json`.

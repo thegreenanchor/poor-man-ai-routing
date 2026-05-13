@@ -1,6 +1,6 @@
 # Skill Index (by phase)
 
-All skills live at `~/.claude/skills/<name>/SKILL.md`. Claude Code auto-loads them during escalation based on the skill description matching the task. Codex-primary sessions use the same files as routing reference material.
+All skills live at `~/.claude/skills/<name>/SKILL.md`. Claude Code auto-loads them during escalation based on the skill description matching the task. Codex-led sessions use the same files as routing reference material.
 
 ---
 
@@ -8,7 +8,7 @@ All skills live at `~/.claude/skills/<name>/SKILL.md`. Claude Code auto-loads th
 
 | Skill | Purpose |
 |---|---|
-| `ai-routing` | Master decision tree: Codex primary, Gemini discovery, Claude escalation/review. |
+| `ai-routing` | Master decision tree: entrypoint-led ownership, Gemini discovery, mandatory Claude judgment escalation. |
 | `codex-handoff` | How to construct Codex prompts. Scoped-task template. |
 | `gemini-handoff` | How to construct Gemini prompts. Search/OSINT patterns. |
 | `claude-usage-protocol` | Claude escalation discipline. Anti-patterns. Tier tables. |
@@ -106,7 +106,7 @@ Live at `~/.claude/agents/<name>.md`.
 
 ## How skills get loaded
 
-Claude Code reads the YAML frontmatter (`name`, `description`) of every `SKILL.md` during escalation. When a task description matches keywords from a skill's description, Claude auto-loads that skill's body for context. Codex-primary sessions should treat these skills as the shared routing/SOP library.
+Claude Code reads the YAML frontmatter (`name`, `description`) of every `SKILL.md` during escalation. When a task description matches keywords from a skill's description, Claude auto-loads that skill's body for context. Codex-led sessions should treat these skills as the shared routing/SOP library.
 
 To force-load a skill: mention its name in the prompt, e.g. "Use the `seo-audit` skill."
 
