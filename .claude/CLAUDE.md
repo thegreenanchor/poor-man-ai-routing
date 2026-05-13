@@ -198,3 +198,47 @@ Default to **subagent spawn** if the task could fan out.
 Default to **stage** mode for Notion writes.
 
 Final reply format: deliverable, then short note about mode and what was delegated. No padding.
+
+---
+
+## 10. System Configuration Reference
+
+### Claude (this session)
+
+| Setting | Value |
+|---|---|
+| Model | `claude-sonnet-4-6` (default, not pinned — override with `--model`) |
+| Effort | Default (Sonnet tier) — use `/fast` to toggle Opus fast mode |
+| Permission — inside working dir | Full auto, no prompts |
+| Permission — reads outside working dir | Silent |
+| Permission — writes outside working dir | One confirmation prompt |
+| Token cap — PEAK | 200 lines/file, 2 files max before subagent |
+| Token cap — OFFPEAK | 500 lines/file, 4 files max before subagent |
+| Avg tokens/session | _(update from Anthropic usage dashboard)_ |
+
+### Codex CLI
+
+| Setting | Value |
+|---|---|
+| Version | `codex-cli 0.130.0` |
+| Model | `o3` (default — override with `codex -m <model>`) |
+| Sandbox | `--sandbox danger-full-access --skip-git-repo-check` |
+| Approval mode | No per-call approval inside workspace |
+| Invoked via | `cdx "<task>"` (wrapper) or `cx` (interactive session) |
+| Avg tokens/session | _(update from OpenAI usage dashboard)_ |
+
+### Gemini CLI
+
+| Setting | Value |
+|---|---|
+| Version | `0.41.2` |
+| Model | `gemini-2.5-pro` (default) |
+| Permission flags | `--yolo --skip-trust` |
+| Invoked via | `gca "<question>"` (wrapper) |
+| Avg tokens/session | _(update from Google AI Studio usage dashboard)_ |
+
+### Where to check usage
+
+- **Claude** — console.anthropic.com → Usage
+- **Codex / OpenAI** — platform.openai.com → Usage
+- **Gemini** — aistudio.google.com → API usage or GCP Console → APIs & Services
