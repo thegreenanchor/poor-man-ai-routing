@@ -1,31 +1,130 @@
 # Poor Man AI Routing
 
-A global entrypoint-led routing configuration for Codex, Claude Code, and Gemini CLI. The AI you start in leads the session: Codex leads `cx` sessions, Claude leads Claude Code sessions, Gemini handles discovery, and Claude is always used for judgment-heavy decisions.
-
-Public, generic, fork-and-customize. Brand placeholders in `BRANDS.md`.
-
----
+> 💡 Think of this as a traffic controller for three AI tools. Start in Codex when you want work done on files, code, docs, automation, or your Obsidian wiki. Start in Claude when you want strategy, judgment, review, or polished thinking. Gemini is the scout that goes out to research the web, scan public sources, and generate images.
 
 ## TL;DR
 
-- **Codex-started sessions** (`cx`) make Codex the main orchestrator/executor.
-- **Claude-started sessions** make Claude the orchestrator/synthesizer.
-- **Gemini CLI** handles research, search, OSINT, Google ecosystem work, large public-source scans, multimodal discovery, and image generation.
-- **Claude judgment escalation is mandatory** for strategy decisions, ambiguous tradeoffs, scoring rubrics, precision review, final QA for brand-facing work, brand voice/polish where quality matters, conflicts between sources/tool outputs, high-stakes judgment, and similar cases.
-- Use `ai-mode` as a preference/status helper; once a session starts, the entrypoint wins.
+- **Entrypoint wins**: the AI you start in leads that session.
+- **Start with `cx`** when you want Codex to lead execution.
+- **Start in Claude Code** when you want Claude to orchestrate.
+- **Use Gemini through `gca`** for research, search, OSINT, Google ecosystem work, large public-source scans, multimodal discovery, and image generation.
+- **Use Claude for judgment**: strategy decisions, ambiguous tradeoffs, scoring rubrics, precision review, final QA for brand-facing work, brand voice/polish, source/tool conflicts, high-stakes judgment, and similar cases.
+- **Outputs go to Obsidian** using stage-and-confirm, duplicate checks, and wiki routing.
+
+Public, generic, fork-and-customize. Brand placeholders live in `BRANDS.md`.
 
 ---
 
-## What this gives you
+## What This Is
 
-- **Three-AI routing**: the entrypoint leads, Gemini researches, and Claude handles judgment escalation.
-- **Entrypoint-led workflow**: start in `cx` when you want Codex to lead; start in Claude Code when you want Claude to orchestrate.
-- **Tiered data access**: Tier 1 summary → Tier 2 slice → Tier 3 full read. Default Tier 1 in PEAK, Tier 2 in OFFPEAK.
-- **Time-aware modes**: PEAK (5am-2pm EST weekdays, max delegation) and OFFPEAK (everything else, more direct work allowed).
-- **Permission posture**: full auto inside the working dir, prompts only for writes outside.
-- **33 skills**: routing, marketing, ops, security, creative, Obsidian knowledge management.
-- **Subagents**: researcher, builder, reviewer, plus Claude-side orchestrator for escalation planning.
-- **Bash + PowerShell wrappers**: `cdx` (Codex) and `gca` (Gemini) with format enforcement baked in.
+Poor Man AI Routing is a portable `~/.claude/` configuration that coordinates Codex CLI, Claude Code, and Gemini CLI without needing a complex platform.
+
+It gives you:
+
+- Entry-point-led routing rules for Codex-led and Claude-led sessions.
+- Wrappers for Codex (`cx`, `cdx`) and Gemini (`gca`) with structured handoff formats.
+- Time-aware PEAK/OFFPEAK modes for saving expensive context.
+- A shared skill library for marketing, ops, security, creative work, Obsidian, and automation.
+- Obsidian-first output routing for durable session logs, drafts, wiki updates, and source ingestion.
+- A mandatory Claude judgment gate so Codex can execute fast without skipping strategy/review when it matters.
+
+---
+
+## Routing Model
+
+### Start In Codex
+
+Use `cx` when you want Codex to be the main operator.
+
+Codex handles:
+
+- Code and file edits
+- Repo scans and refactors
+- Tests, builds, scripts, and automation
+- Documentation updates
+- Obsidian wiki INGEST/LINT work
+- Normal synthesis from local files and known context
+
+Codex still routes out:
+
+- To **Gemini** for discovery and current/source-backed information
+- To **Claude** whenever judgment is needed
+
+### Start In Claude
+
+Use Claude Code when you want Claude to orchestrate.
+
+Claude handles:
+
+- Strategy
+- Judgment calls
+- Ambiguous tradeoffs
+- Scoring rubrics
+- Precision review
+- Brand-facing final QA
+- Brand voice/polish where quality matters
+- Conflicts between sources, tools, files, or agents
+
+Claude delegates:
+
+- Execution-heavy work to Codex through `cdx`
+- Discovery work to Gemini through `gca`
+
+### Use Gemini
+
+Use `gca` for:
+
+- Web search and current facts
+- News, rules, prices, standards, and market changes
+- OSINT on public companies/domains/assets
+- Google Analytics, Search Console, Drive, and NotebookLM-style tasks
+- Large public-source scans
+- Multimodal discovery
+- Image generation with Gemini image models such as Nano Banana / Nano Banana Pro
+
+Gemini returns compressed summaries, sources, quotes, and scratch artifacts. The session lead turns that into the final work.
+
+---
+
+## Judgment Rule
+
+Claude must be used anytime judgment is needed, including:
+
+- Strategy decisions
+- Ambiguous tradeoffs
+- Scoring rubrics
+- Precision review
+- Final QA for brand-facing work
+- Brand voice/polish where quality matters
+- Conflicts between sources/tool outputs
+- High-stakes judgment
+- Similar cases involving reputation, positioning, money, legal/medical/financial risk, or irreversible decisions
+
+This applies even in Codex-led sessions. Codex leads execution, but Claude is the judgment specialist.
+
+---
+
+## Obsidian Output
+
+Durable outputs route to the active Obsidian vault:
+
+```text
+C:\Users\moveb\iCloudDrive\iCloud~md~obsidian\nameless
+```
+
+Default delivery behavior:
+
+- Draft non-trivial outputs to `./.scratch/obsidian-stage/<topic>-<date>.md`
+- Show the intended vault destination before writing
+- Run the pre-write duplicate check before creating new wiki pages
+- Merge into canonical pages when duplicates are found
+- Write session logs to `Wiki/Logs/Session-YYYY-MM-DD.md`
+
+The Web Clipper inbox path inside the vault is:
+
+```text
+Sources/_inbox
+```
 
 ---
 
@@ -33,35 +132,27 @@ Public, generic, fork-and-customize. Brand placeholders in `BRANDS.md`.
 
 ### Prerequisites
 
-1. **Claude Code CLI** installed and authed.
-2. **Node.js 20+** (for Codex CLI and Gemini CLI installs).
-3. **WSL2 with bash** OR **PowerShell 7+** OR **Git Bash**.
-4. **`jq`** (for the optional large-file-guard hook).
+1. Claude Code CLI installed and authenticated.
+2. Node.js 20+.
+3. Codex CLI and Gemini CLI installed.
+4. PowerShell 7+, WSL2, Git Bash, Linux, or macOS shell.
+5. Optional: `jq` for the large-file guard hook.
 
-### Step 1: Install Codex CLI and Gemini CLI
-
-See `docs/INSTALL_TOOLS.md` for full instructions. Quick version:
+Install Codex and Gemini:
 
 ```bash
-# Codex CLI
 npm install -g @openai/codex
-
-# Gemini CLI
 npm install -g @google/gemini-cli
 ```
 
-Then authenticate each per their docs.
-
-### Step 2: Install this config
-
-**Windows PowerShell** (recommended for native Windows):
+Install this config:
 
 ```powershell
 cd <repo-root>
 .\INSTALL.ps1
 ```
 
-**WSL / Git Bash / Linux / Mac**:
+Or from bash:
 
 ```bash
 cd <repo-root>
@@ -69,178 +160,98 @@ chmod +x INSTALL.sh
 ./INSTALL.sh
 ```
 
-The installer:
-1. Backs up any existing `~/.claude/` to `~/.claude.bak.<timestamp>/`
-2. Copies this `.claude/` directory to `~/.claude/`
-3. Makes the wrappers in `~/.claude/bin/` executable
-4. Adds `~/.claude/bin/` to your PATH (if not already)
-5. Verifies Codex and Gemini are installed and reachable
+The installer backs up the existing `~/.claude/`, copies this repo's `.claude/`, installs wrappers, updates PATH where possible, and verifies the CLIs.
 
-### Step 3: Verify
+---
 
-In a new terminal:
+## Daily Use
 
-```bash
-which cdx        # should print ~/.claude/bin/cdx
-which cx         # should print ~/.claude/bin/cx
-which gca        # should print ~/.claude/bin/gca
-codex --version  # should print Codex version
-gemini --version # should print Gemini version
-ai-mode status   # should print claude or codex
-
-# Smoke test the wrappers (these will actually call the LLMs)
-cdx "GOAL: Print 'hello from codex' and exit. RETURN: STATUS only."
-cx "Inspect this folder and report the current routing mode. Do not edit files."
-gca "TOPIC: What is 2+2? TIER: 1."
-```
-
-### Step 4: Start Work From The Right Entrypoint
-
-Codex picks up `AGENTS.md` and `CODEX_PRIMARY.md`. Gemini picks up `GEMINI.md`. Claude picks up `CLAUDE.md` when you start in Claude Code or when a session escalates for judgment.
-
-Start in Codex when you want Codex to lead execution:
+Start a Codex-led session:
 
 ```bash
 ai-mode codex
 cx
 ```
 
-Start in Claude Code when you want Claude to orchestrate:
+Start a Claude-led session:
 
 ```bash
 ai-mode claude
 claude
 ```
 
-You do not type `cx` before every prompt. Use it once to start a Codex-led session. The mode file is stored at `~/.claude/.ai-routing/mode` by default, but the session entrypoint is authoritative if it conflicts with the mode file.
-
----
-
-## File structure
-
-```
-~/.claude/
-├── CLAUDE.md                  Claude escalation/review rules
-├── CODEX_PRIMARY.md           Codex-started session instructions
-├── settings.json              Permissions, env, hooks
-├── AGENTS.md                  Codex orientation
-├── GEMINI.md                  Gemini orientation
-├── agents/
-│   ├── orchestrator.md        Claude-side escalation planner
-│   ├── researcher.md          Routes to Gemini
-│   ├── builder.md             Routes to Codex
-│   └── reviewer.md            Precision review / final QA check
-├── bin/
-│   ├── cdx.sh / cdx.ps1       Codex wrapper
-│   ├── cx.sh / cx.ps1         Codex-led session launcher
-│   ├── gca.sh / gca.ps1       Gemini wrapper
-│   └── ai-mode.sh / ai-mode.ps1 Global mode switcher
-├── hooks/
-│   └── large-file-guard.sh    Optional PreToolUse hook
-└── skills/                    33 routing and domain SOPs
-```
-
-See `docs/PHASES.md` for the full skill index with descriptions.
-
----
-
-## Quick reference
-
-### Mode commands
-
-- `/peak` → force PEAK posture
-- `/offpeak` → force OFFPEAK posture
-- `/auto` → re-detect from clock
-- `ai-mode status` → show global routing mode
-- `ai-mode codex` → prefer Codex-led sessions
-- `ai-mode claude` → prefer Claude-led orchestration sessions
-- `ai-session-save` → export the latest Codex session and route the closeout log to the Obsidian wiki
-
-### Wrappers
+Run a scoped Codex worker task:
 
 ```bash
-# Codex (build / file ops)
-cdx "GOAL: ...
-FILES IN SCOPE: ...
-SUCCESS: ...
+cdx "GOAL: Fix the failing test.
+FILES IN SCOPE: src/
+SUCCESS: tests pass.
 RETURN: STATUS + SUMMARY + EVIDENCE."
-
-# Codex-led session
-ai-mode codex
-cx
-cx "Fix the failing tests and summarize what changed."
-
-# End-only session logging
-ai-session-save
-ai-session-save -Title "Routing system update"
-
-# Gemini (search / OSINT / large doc scan)
-gca "TOPIC: ...
-SCOPE: ...
-WHAT I NEED: ...
-TIER: 1 or 2."
 ```
 
-Session logs are written to:
+Run Gemini research:
+
+```bash
+gca "TOPIC: Current competitor pricing for travel nurse staffing platforms.
+SCOPE: United States, last 90 days.
+WHAT I NEED:
+  - pricing pages
+  - plan names
+  - source URLs
+TIER: 2."
+```
+
+Save a session:
+
+```bash
+ai-session-save
+```
+
+Session exports are written locally to:
 
 ```text
 ~/Documents/workspace/AI Session Logs/
 ```
 
-When `ai-session-save` is entered inside a connected Codex session, the routing instructions treat it as a full closeout command:
+Connected Codex sessions also route closeout logs to Obsidian.
 
-- save the local raw, structured, and Obsidian-ready files
-- read the generated `obsidian-ready.md`
-- write the session log to `Wiki/Logs/Session-YYYY-MM-DD.md`
-- return both the local folder path and the vault file path
+---
 
-If the vault path is unavailable, the local export still completes and the vault write is skipped with a clear note.
+## File Structure
 
-### Subagents
-
-Spawn via Claude Code's Task tool or by mentioning the subagent in the prompt.
-
-### Mode detection
-
-Run at session start (Claude Code does this automatically per `CLAUDE.md`):
-
-```bash
-TZ="America/New_York" date +"%H %A"
+```text
+~/.claude/
+├── CLAUDE.md                  Claude-led orchestration and judgment rules
+├── CODEX_PRIMARY.md           Codex-led session rules
+├── AGENTS.md                  Codex orientation
+├── GEMINI.md                  Gemini orientation
+├── settings.json              Permissions, env, hooks
+├── agents/
+│   ├── orchestrator.md
+│   ├── researcher.md
+│   ├── builder.md
+│   └── reviewer.md
+├── bin/
+│   ├── cdx.sh / cdx.ps1       Scoped Codex worker wrapper
+│   ├── cx.sh / cx.ps1         Codex-led session launcher
+│   ├── gca.sh / gca.ps1       Gemini wrapper
+│   └── ai-mode.sh / ai-mode.ps1
+├── hooks/
+│   └── large-file-guard.sh
+└── skills/                    Routing and domain SOPs
 ```
+
+See `docs/PHASES.md` for the skill index.
 
 ---
 
 ## Customization
 
-Each skill is a markdown file. Edit `~/.claude/skills/<name>/SKILL.md` to refine. Changes take effect on next session.
-
-To add a skill: create a new directory under `~/.claude/skills/` with a `SKILL.md` containing YAML frontmatter (`name`, `description`).
-
-To adjust thresholds: edit `~/.claude/skills/usage-mode-awareness/SKILL.md`.
-
-To enable the large-file-guard hook: edit `~/.claude/settings.json` `hooks.PreToolUse` to include the script.
-
----
-
-## What's NOT in this repo
-
-These are already provided by Anthropic skills (do not duplicate):
-- `docx`, `pptx`, `xlsx`, `pdf` — Office document creation
-- `canvas-design` — visual design
-- `internal-comms` — internal communications
-- `ops-analyst` — operational analysis
-- `brand-guidelines` — Anthropic brand assets
-
----
-
-## Updating
-
-This system is intentionally modular. To update:
-1. Pull the latest version of this repo.
-2. Re-run `INSTALL.sh` or `INSTALL.ps1`. It backs up your current config first.
-3. Re-apply any custom edits from your backup.
-
-For partial updates (one skill), just copy that skill's directory.
+- Edit skills in `~/.claude/skills/<name>/SKILL.md`.
+- Edit brand placeholders in `BRANDS.md`.
+- Adjust PEAK/OFFPEAK thresholds in `skills/usage-mode-awareness/SKILL.md`.
+- Enable hooks in `~/.claude/settings.json`.
+- Re-run the installer after pulling repo updates.
 
 ---
 
@@ -248,14 +259,13 @@ For partial updates (one skill), just copy that skill's directory.
 
 | Symptom | Fix |
 |---|---|
-| `cdx: command not found` | PATH not picked up. Open new shell or `source ~/.bashrc` / `~/.zshrc`. |
-| `cx: command not found` | Re-run the installer and open a new shell; verify `~/.claude/bin` is on PATH. |
-| Unexpected routing behavior | Check which entrypoint started the session, then run `ai-mode status` if the wrapper message looks stale. |
-| `codex: command not found` | Codex not installed. See `docs/INSTALL_TOOLS.md`. |
-| Hooks not firing | Hooks must be enabled per session in `settings.json`. Default is off. |
-| Mode always PEAK | DST not being applied. Use `TZ="America/New_York"` env or `/auto` override. |
-| Gemini auth fails | Re-auth: `gemini auth` and follow prompts. |
-| Codex sandbox blocks writes | Confirm wrapper is calling `--sandbox workspace-write`; check `~/.claude/bin/cdx`. |
+| `cx` or `cdx` not found | Open a new shell, check PATH, or re-run the installer. |
+| `codex` not found | Install Codex CLI with `npm install -g @openai/codex`. |
+| `gemini` not found | Install Gemini CLI with `npm install -g @google/gemini-cli`. |
+| Unexpected routing behavior | Check the session entrypoint first; entrypoint wins over the mode file. |
+| Claude was skipped for judgment | Tighten the prompt or routing rule: judgment-heavy work must escalate to Claude. |
+| Obsidian output landed wrong | Check `obsidian-output-routing` and the staged file path before confirming writes. |
+| Duplicate wiki pages | Run the pre-write duplicate check and merge into the canonical page. |
 
 ---
 
