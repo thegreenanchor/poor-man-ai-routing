@@ -63,9 +63,11 @@ Session closeout is handled by `ai-session-save`: local export first, then Obsid
 
 ## Phase 5: Obsidian / knowledge management (6 skills)
 
+This phase implements an Obsidian version of Andrej Karpathy's [LLM Wiki pattern](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f): sources are archived, then Codex/Claude/Gemini maintain a compiled Markdown knowledge base through INGEST, QUERY, and LINT operations.
+
 | Skill | Covers |
 |---|---|
-| `obsidian-output-routing` | Vault routing matrix, page templates, stage-and-confirm protocol, and pre-write duplicate checks. |
+| `obsidian-output-routing` | Karpathy-style LLM Wiki routing, vault destinations, page templates, stage-and-confirm protocol, and pre-write duplicate checks. |
 | `obsidian-markdown` | Obsidian-flavored Markdown, links, embeds, callouts, tags, properties, and note structure. |
 | `obsidian-bases` | Obsidian Bases JSON schema, formulas, filters, views, and database-like vault workflows. |
 | `json-canvas` | Obsidian Canvas `.canvas` JSON files, nodes, edges, groups, layout, and validation. |

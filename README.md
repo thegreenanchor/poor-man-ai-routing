@@ -1,6 +1,6 @@
 # Poor Man AI Routing
 
-> 💡 Think of this as a traffic controller for three AI tools. Start in Codex when you want work done on files, code, docs, automation, or your Obsidian wiki. Start in Claude when you want strategy, judgment, review, or polished thinking. Gemini is the scout that goes out to research the web, scan public sources, and generate images.
+> 💡 Think of this as a traffic controller for three AI tools plus a memory system inspired by Andrej Karpathy's [LLM Wiki pattern](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f). Gemini gathers raw sources, Codex turns them into an organized Obsidian wiki, and Claude steps in for judgment. Instead of re-reading the same pile of documents every time, the system compiles knowledge once and keeps improving it.
 
 ## TL;DR
 
@@ -9,7 +9,8 @@
 - **Start in Claude Code** when you want Claude to orchestrate.
 - **Use Gemini through `gca`** for research, search, OSINT, Google ecosystem work, large public-source scans, multimodal discovery, and image generation.
 - **Use Claude for judgment**: strategy decisions, ambiguous tradeoffs, scoring rubrics, precision review, final QA for brand-facing work, brand voice/polish, source/tool conflicts, high-stakes judgment, and similar cases.
-- **Outputs go to Obsidian** using stage-and-confirm, duplicate checks, and wiki routing.
+- **The Obsidian wiki follows Karpathy's LLM Wiki pattern**: raw sources go into `Sources/_inbox`, then Codex compiles them into durable Markdown pages with INGEST/QUERY/LINT operations.
+- **Outputs go to Obsidian** using stage-and-confirm, source trails, contradiction handling, duplicate checks, and wiki routing.
 
 Public, generic, fork-and-customize. Brand placeholders live in `BRANDS.md`.
 
@@ -25,7 +26,7 @@ It gives you:
 - Wrappers for Codex (`cx`, `cdx`) and Gemini (`gca`) with structured handoff formats.
 - Time-aware PEAK/OFFPEAK modes for saving expensive context.
 - A shared skill library for marketing, ops, security, creative work, Obsidian, and automation.
-- Obsidian-first output routing for durable session logs, drafts, wiki updates, and source ingestion.
+- Obsidian-first output routing built around Karpathy's LLM Wiki pattern: raw source archive plus a persistent compiled Markdown knowledge layer.
 - A mandatory Claude judgment gate so Codex can execute fast without skipping strategy/review when it matters.
 
 ---
@@ -126,7 +127,7 @@ The Web Clipper inbox path inside the vault is:
 Sources/_inbox
 ```
 
-### LLM Wiki Pattern
+### Karpathy's LLM Wiki Pattern
 
 The Obsidian wiki system is inspired by Andrej Karpathy's [LLM Wiki pattern](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f): raw sources land in an inbox/archive, then an LLM incrementally compiles them into a persistent Markdown knowledge base. This repo adapts that idea with typed wiki pages, INGEST/QUERY/LINT operations, source trails, contradiction handling, duplicate checks, and Codex/Claude/Gemini routing.
 

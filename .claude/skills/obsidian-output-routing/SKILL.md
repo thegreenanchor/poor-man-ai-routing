@@ -5,6 +5,10 @@ description: Routes every non-trivial deliverable to the correct destination in 
 
 # Obsidian Output Routing
 
+This Obsidian system adapts Andrej Karpathy's LLM Wiki pattern: raw sources are captured and archived, then the agents compile them into durable Markdown wiki pages instead of re-reading raw documents for every query.
+
+Reference: https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f
+
 ## Vault Root
 `C:\Users\moveb\iCloudDrive\iCloud~md~obsidian\nameless`
 
