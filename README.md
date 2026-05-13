@@ -126,6 +126,10 @@ The Web Clipper inbox path inside the vault is:
 Sources/_inbox
 ```
 
+### LLM Wiki Pattern
+
+The Obsidian wiki system is inspired by Andrej Karpathy's [LLM Wiki pattern](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f): raw sources land in an inbox/archive, then an LLM incrementally compiles them into a persistent Markdown knowledge base. This repo adapts that idea with typed wiki pages, INGEST/QUERY/LINT operations, source trails, contradiction handling, duplicate checks, and Codex/Claude/Gemini routing.
+
 ---
 
 ## Install
