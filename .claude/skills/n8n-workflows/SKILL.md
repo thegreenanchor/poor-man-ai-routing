@@ -83,29 +83,29 @@ Steps:
 3. GSC: Pull yesterday's clicks/impressions
 4. Function: Format markdown report
 5. Slack: Post to channel
-6. Notion: Append row to metrics database
+6. Write: Append row to Wiki/Synthesis/Daily Metrics YYYY-MM.md in Obsidian vault
 
-### CRM sync (HubSpot ↔ Notion)
+### CRM sync (HubSpot ↔ Obsidian)
 
 Trigger: Cron (every 30 min).
 Steps:
 1. HubSpot: List contacts updated since last run (use cursor variable)
 2. Loop: For each contact
-3. Notion: Find existing page by HubSpot ID property
-4. Notion: Update or Create page
+3. Obsidian: Find existing Wiki/People/<contact>.md or Wiki/Companies/<company>.md
+4. Write: Update or create markdown page
 5. Set last-run cursor
 
 ### Content pipeline trigger
 
-Trigger: Notion change (poll database for status changes).
+Trigger: File-watch or manual trigger on content files.
 Steps:
-1. Notion poll
+1. [NOTE: Content pipeline status triggers still require Notion or manual file editing - file-watch replacement is out of scope for now]
 2. Filter: Status = Scheduled
 3. Switch by Channel
    - Blog: HTTP to WP REST API to schedule post
    - LinkedIn: HTTP to LinkedIn API (or buffer integration)
    - Email: Mailchimp/Mailcoach create campaign
-4. Notion: Update Status to Published, Publish Date to now
+4. Update publish status in source file
 
 ## JSON workflow manipulation
 
@@ -130,21 +130,21 @@ For automation, define credentials via env vars where node supports it (e.g., HT
 
 ## Brand-specific recipes
 
-### WORK (your day-job brand): nurse outreach pipeline
+### MNA Healthcare: nurse outreach pipeline
 
 LinkedIn lead form → HubSpot → Mailcoach (specialty/state-tagged sequence) → Slack notify BD owner.
 
-### SIDE: client report builder
+### Green Anchor: client report builder
 
-Cron monthly → pull GA4/GSC/HubSpot per client → render markdown via template → save to Notion + email PDF to client.
+Cron monthly → pull GA4/GSC/HubSpot per client → render markdown via template → write to Wiki/Synthesis/<client>-report-YYYY-MM.md in Obsidian vault + email PDF to client.
 
-### OTHER (your wellness brand): affiliate link tracker
+### TGA Health: affiliate link tracker
 
-Webhook from affiliate dashboards → log to Notion (clicks/conversions) → weekly Slack digest.
+Webhook from affiliate dashboards → write to Wiki/Synthesis/Affiliate-Tracker-YYYY-MM.md in Obsidian vault (clicks/conversions) → weekly Slack digest.
 
-### MAIN (your main brand): product launch
+### Side Hustle Labs: product launch
 
-Notion status change to "Launched" → trigger:
+Manual trigger or file-watch on Wiki/Projects/<product>.md status → trigger:
 - WP create post
 - Mailchimp send to launch segment
 - Social: LinkedIn + X post via buffer/zapier

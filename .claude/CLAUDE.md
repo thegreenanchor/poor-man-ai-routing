@@ -135,7 +135,7 @@ Routing (always available):
 - `gemini-handoff` — Gemini prompt template, search patterns
 - `claude-usage-protocol` — token discipline SOP, anti-patterns
 - `usage-mode-awareness` — PEAK/OFFPEAK detection + thresholds
-- `notion-output-routing` — Notion destination matrix + page templates + stage-and-confirm protocol
+- `obsidian-output-routing` — Obsidian vault routing matrix + page templates + stage-and-confirm protocol
 
 Marketing / business:
 - `seo-audit`, `ga4-reporting`, `gsc-ops`, `meta-ads-api`
@@ -159,33 +159,33 @@ Anthropic-provided (already installed, do not duplicate):
 
 ---
 
-## 8. Delivery (Notion routing)
+## 8. Delivery (Obsidian routing)
 
-Every non-trivial output ends with a Notion write step. Outputs do not just float in chat. They land in your PARA + brand-coded Notion structure, in the proper destination database, formatted as native Notion blocks.
+Every non-trivial output ends with a vault write step. Outputs do not just float in chat. They land in the Obsidian wiki at `C:\Users\moveb\iCloudDrive\iCloud~md~obsidian\nameless`, routed to the correct Wiki folder and page type, formatted as Obsidian-flavored markdown.
 
-**Outbound email/message drafts.** Whenever creating, revising, or recommending an email, LinkedIn message, SMS, Slack message, or other outbound text the user may send, automatically add the final draft and relevant context to the appropriate Notion destination before finishing. If the correct Notion destination is not known from the current task, ask the user for the destination before writing the final answer. For MSP/vendor outreach, default to the matching MSP Leads Tracker page when identifiable, update contact dates/follow-up dates when relevant, and add a contact log entry that records the draft or message purpose.
+**Outbound email/message drafts.** Whenever creating, revising, or recommending an email, LinkedIn message, SMS, Slack message, or other outbound text the user may send, automatically append the final draft and relevant context to `Wiki/People/<person>.md` (## Notes section) before finishing. If the correct person page is not known, ask the user before writing. For MSP/vendor outreach, default to the matching Company page when identifiable, update last-updated date, and append a contact log entry recording the draft or message purpose.
 
-**Default mode: stage and confirm.** Claude drafts to `./.scratch/notion-stage/<topic>-<date>.md` with frontmatter properties + body, then asks: `Push to <DB Name> as draft? (yes / no / change destination / change brand / edit)`. Only writes via the Notion MCP after explicit yes.
+**Default mode: stage and confirm.** Claude drafts to `./.scratch/obsidian-stage/<topic>-<date>.md` with frontmatter + body, then asks: `Write to Wiki/<folder>/<page>.md? (yes / no / change path / change brand / edit)`. Only writes to the vault after explicit yes.
 
-**Exception: session closeout.** When the user enters `ai-session-save`, do not ask for a second confirmation. Save the local session files and immediately push the generated Notion-ready log to the AI Dashboard/session-log destination if the Notion connector is available.
+**Exception: session closeout.** When the user enters `ai-session-save`, do not ask for a second confirmation. Save the local session files and immediately write the session log to `Wiki/Logs/Session-YYYY-MM-DD.md` in the vault.
 
 Override commands user can type:
 - `direct-write` → skip staging this session
 - `stage` → return to default
 
-**Brand routing.** Every brand-specific output gets a brand tag. Default placeholder codes:
-- MAIN (PURPLE)
-- WORK (BLUE)
-- SIDE (GREEN)
-- OTHER (PINK)
+**Brand routing.** Every brand-specific output gets a `domain:` tag in its frontmatter. Codes:
+- SHL — Side Hustle Labs (PURPLE)
+- MNA — MNA Healthcare (BLUE)
+- TGA — The Green Anchor (GREEN)
+- TGAH — TGA Health (PINK)
 
-Customize names, colors, and voice descriptors in `BRANDS.md` at the repo root. If brand is unstated and the task is brand-specific, ask before writing.
+Voice descriptors and positioning in `BRANDS.md`. If brand is unstated and task is brand-specific, ask before writing.
 
-**Routing matrix:** see skill `notion-output-routing` for the full destination table, page templates, property requirements, and Codex handoff pattern. Always consult that skill before any Notion write.
+**Routing matrix:** see skill `obsidian-output-routing` for the full destination table, page type templates, and stage-and-confirm protocol. Always consult that skill before any vault write.
 
-**Oversized outputs:** parent page in destination DB → child pages per section. Code blocks and large data stay in scratch with Notion link.
+**Oversized outputs:** parent page in destination folder → child pages as separate `.md` files linked via wikilinks. Code blocks and large data stay in scratch with a wikilink from the parent page.
 
-The reviewer subagent gates this only when Claude has been escalated for final QA. In Codex-primary work, Codex stages drafts and explicitly requests Claude review when precision matters.
+The reviewer subagent gates this only when Claude has been escalated for final QA.
 
 ## 9. When in doubt
 
@@ -195,7 +195,7 @@ Default to **PEAK mode** if uncertain.
 
 Default to **subagent spawn** if the task could fan out.
 
-Default to **stage** mode for Notion writes.
+Default to **stage** mode for vault writes.
 
 Final reply format: deliverable, then short note about mode and what was delegated. No padding.
 

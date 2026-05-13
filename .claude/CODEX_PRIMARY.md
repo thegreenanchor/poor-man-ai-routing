@@ -21,12 +21,18 @@ Do not assume a Claude layer will route, review, summarize, or write outputs for
 - Save end-of-session exports with `ai-session-save`; default output is `~/Documents/workspace/AI Session Logs/`.
 - When the user enters `ai-session-save` as a session-ending request, do the whole closeout in one pass:
   1. Run `ai-session-save.cmd` locally.
-  2. Read the generated `notion-ready.md`.
-  3. Create a Notion page from that log under the configured AI session-log parent page.
-  4. Return the local folder path and Notion page URL.
-  If the Notion connector is unavailable, still save the local files and clearly say the Notion push was skipped.
-- Stage Notion-ready drafts in `./.scratch/notion-stage/` as Markdown with clear frontmatter. Do not claim the draft has been pushed to Notion unless a real Notion tool is available and used.
+  2. Read the generated session log.
+  3. Write session log to `Wiki/Logs/Session-YYYY-MM-DD.md` in the vault at `C:\Users\moveb\iCloudDrive\iCloud~md~obsidian\nameless`.
+  4. Return the local folder path and vault file path.
+  If the vault path is unavailable, still save the local files and clearly say the vault write was skipped.
+- Stage vault-ready drafts in `./.scratch/obsidian-stage/` as Markdown with clear frontmatter. Do not claim the draft has been written to the vault unless the Write tool was actually used.
 - Keep final replies concise: what changed, what was verified, and any remaining blocker.
+
+## Email And Message Drafts
+
+- Whenever creating, revising, or recommending an email, LinkedIn message, SMS, Slack message, or other outbound text the user may send, automatically append the final draft and relevant context to `Wiki/People/<person>.md` (## Notes section) in the Obsidian vault before finishing.
+- If the correct person page is not known, ask the user before writing.
+- For MSP/vendor outreach, default to the matching Company page (`Wiki/Companies/<company>.md`) when identifiable, update last-updated date, and append a contact log entry recording the draft or message purpose.
 
 ## Safety
 
