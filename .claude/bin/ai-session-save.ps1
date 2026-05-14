@@ -4,6 +4,8 @@
 param(
   [string]$SessionId,
   [string]$Title,
+  [ValidateSet('MNA','TGA','PPH','SHL','TGAH','PERSONAL','CROSS')]
+  [string]$Domain = 'CROSS',
   [string]$OutputRoot = "$HOME\Documents\workspace\AI Session Logs",
   [switch]$Latest,
   [switch]$Help
@@ -12,7 +14,7 @@ param(
 $ErrorActionPreference = 'Stop'
 
 if ($Help) {
-  Write-Host "Usage: ai-session-save [-SessionId <codex-session-id>] [-Title <title>] [-OutputRoot <path>]"
+  Write-Host "Usage: ai-session-save [-SessionId <codex-session-id>] [-Title <title>] [-Domain MNA|TGA|PPH|SHL|TGAH|PERSONAL|CROSS] [-OutputRoot <path>]"
   Write-Host "Exports raw transcript, structured session log, and Obsidian-ready session log."
   Write-Host "In a connected Codex session, routing rules should also write the Obsidian-ready log to the vault."
   exit 0
@@ -239,7 +241,7 @@ $obsidianLines.Add("type: log")
 $obsidianLines.Add("date: " + $started.ToString("yyyy-MM-dd"))
 $obsidianLines.Add("session-id: $id")
 $obsidianLines.Add("agents: [Codex]")
-$obsidianLines.Add("domain: CROSS")
+$obsidianLines.Add("domain: $Domain")
 $obsidianLines.Add("tags: [log]")
 $obsidianLines.Add("working-directory: $cwd")
 $obsidianLines.Add("raw-transcript: $rawJsonl")
@@ -254,6 +256,11 @@ $obsidianLines.Add("")
 $obsidianLines.Add("## Work Done")
 $obsidianLines.Add("")
 $obsidianLines.Add($Title)
+$obsidianLines.Add("")
+$obsidianLines.Add("## Domain Routing")
+$obsidianLines.Add("")
+$obsidianLines.Add("- Domain: ``$Domain``")
+$obsidianLines.Add("- Project, campaign, content, and task details should also be logged on the canonical wiki page for this domain. This session log is evidence, not the only operating memory.")
 $obsidianLines.Add("")
 $obsidianLines.Add("## Decisions Made")
 $obsidianLines.Add("")

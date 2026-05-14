@@ -166,6 +166,23 @@ Anthropic-provided (already installed, do not duplicate):
 
 Every non-trivial output ends with a vault write step. Outputs do not just float in chat. They land in the Obsidian wiki at `C:\Users\moveb\iCloudDrive\iCloud~md~obsidian\nameless`, routed to the correct Wiki folder and page type, formatted as Obsidian-flavored markdown.
 
+### 8.1 LLM Wiki memory contract
+
+Every non-trivial task by any CLI AI must be logged into the Obsidian LLM Wiki before final user delivery. The session lead owns this even when Gemini or Codex did the work.
+
+Required closeout steps:
+1. Classify the domain: `MNA`, `TGA`, `PPH`, `SHL`, `TGAH`, `PERSONAL`, or `CROSS`.
+2. Identify the canonical page:
+   - project/task work -> `Wiki/Projects/<project>.md`
+   - campaign/content calendar -> `Wiki/Campaigns/<campaign>.md`
+   - individual content item -> `Wiki/Content/<item>.md`
+   - unclear/cross-cutting work -> `Wiki/Synthesis/Work Queue.md`
+3. Append tasks, decisions, artifacts, and next actions to the correct page.
+4. Update `last-updated`, source trails, and Notebook Navigator tags.
+5. Append an UPDATE/INGEST/QUERY/LINT line to `Wiki/log.md`.
+
+Do not use session transcripts as the only memory. Session logs are evidence; project/campaign/content pages are the operating memory.
+
 **Outbound email/message drafts.** Whenever creating, revising, or recommending an email, LinkedIn message, SMS, Slack message, or other outbound text the user may send, automatically append the final draft and relevant context to `Wiki/People/<person>.md` (## Notes section) before finishing. If the correct person page is not known, ask the user before writing. For MSP/vendor outreach, default to the matching Company page when identifiable, update last-updated date, and append a contact log entry recording the draft or message purpose.
 
 **Default mode: stage and confirm.** Claude drafts to `./.scratch/obsidian-stage/<topic>-<date>.md` with frontmatter + body, then asks: `Write to Wiki/<folder>/<page>.md? (yes / no / change path / change brand / edit)`. Only writes to the vault after explicit yes.
@@ -177,10 +194,13 @@ Override commands user can type:
 - `stage` → return to default
 
 **Brand routing.** Every brand-specific output gets a `domain:` tag in its frontmatter. Codes:
-- SHL — Side Hustle Labs (PURPLE)
-- MNA — MNA Healthcare (BLUE)
-- TGA — The Green Anchor (GREEN)
-- TGAH — TGA Health (PINK)
+- MNA — MNA Healthcare, Jose's employer/work context (BLUE)
+- TGA — The Green Anchor, Jose's active brand (GREEN)
+- PPH — Pink Party House Co., first TGA client (PINK)
+- SHL — Side Hustle Labs, back-burner ideas (PURPLE)
+- TGAH — TGA Health / `tgahealth.shop`, TGA n8n surface (PINK)
+- PERSONAL — personal learning, health, travel, life
+- CROSS — routing, infrastructure, wiki, shared systems
 
 Voice descriptors and positioning in `BRANDS.md`. If brand is unstated and task is brand-specific, ask before writing.
 

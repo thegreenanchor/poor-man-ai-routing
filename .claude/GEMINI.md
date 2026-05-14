@@ -75,7 +75,12 @@ For image gen tasks via Gemini:
 
 ## Brand context
 
-Same as Codex AGENTS.md. Four brands. If brand isn't named in a brand-specific task, return DECISIONS NEEDED.
+Same as Codex AGENTS.md. Active domains are `MNA`, `TGA`, `PPH`, `SHL`, `TGAH`, `PERSONAL`, and `CROSS`. If domain isn't clear in a domain-specific task, return DECISIONS NEEDED.
+
+When returning research for work that will enter the Obsidian LLM Wiki, include a `WIKI_ROUTING:` hint in SUMMARY or DECISIONS NEEDED:
+- suggested domain
+- suggested canonical page, if obvious
+- whether the result should become project, campaign, content, company, concept, synthesis, or source material
 
 ---
 

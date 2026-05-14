@@ -8,6 +8,9 @@ All notable changes to this project are documented here. Format follows
 
 ### Changed
 
+- Added a mandatory LLM Wiki memory contract: every CLI AI must log non-trivial tasks, decisions, artifacts, and next actions to the correct Obsidian domain/project before final delivery.
+- Added domain-aware session closeout support via `ai-session-save -Domain MNA|TGA|PPH|SHL|TGAH|PERSONAL|CROSS`.
+- Updated brand/domain configuration around MNA as employer, The Green Anchor as active brand, Pink Party House Co. as first TGA client, and SHL as back-burner.
 - Updated repository descriptions and session-closeout wording for Obsidian-first routing.
 - Added an Obsidian pre-write duplicate check so approval does not bypass dedupe.
 - Aligned routing rules around entrypoint-led ownership with mandatory Claude judgment escalation.

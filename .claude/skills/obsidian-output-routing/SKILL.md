@@ -16,6 +16,8 @@ Wiki root: `Wiki/`
 Sources drop zone: `Sources/_inbox/`
 Secure files: `Secure/`
 
+Core rule: every non-trivial task performed by any CLI AI must be written back to the LLM Wiki in the correct domain before final delivery.
+
 ---
 
 ## Stage-and-Confirm Protocol (default)
@@ -44,19 +46,50 @@ Approval permits writing, but never bypasses duplicate detection. Before moving 
 
 ---
 
+## Mandatory Task Logging
+
+Every non-trivial work item needs two records:
+1. **Operating memory** on the canonical page.
+2. **Audit trail** in `Wiki/log.md`.
+
+Canonical page routing:
+- Project work -> `Wiki/Projects/<project>.md`
+- Content calendar/campaign work -> `Wiki/Campaigns/<campaign>.md`
+- Individual content item -> `Wiki/Content/<item>.md`
+- Company/contact context -> `Wiki/Companies/` or `Wiki/People/`
+- Unknown or cross-cutting work -> `Wiki/Synthesis/Work Queue.md`
+
+Append to the most relevant section:
+- `## Next Actions` for tasks
+- `## Decisions` for choices made
+- `## Notes` for context
+- `## History` for completed milestones
+- `## Content Calendar` for linked content items
+
+Update frontmatter:
+- `last-updated: YYYY-MM-DD`
+- `domain: MNA | TGA | PPH | SHL | TGAH | PERSONAL | CROSS`
+- Notebook Navigator tags such as `area/tga`, `employer/mna-healthcare`, `client/pink-party-house`, and `status/active`
+
+Use `Wiki/Synthesis/Work Queue.md` only when the correct canonical page cannot be identified safely.
+
+---
+
 ## Routing Matrix
 
 | Output type | Vault destination | Page type |
 |---|---|---|
 | Quick capture, idea | `Sources/_inbox/<topic>.md` -> trigger INGEST | Source |
 | Task / action item | Append to `Wiki/Projects/<project>.md` ## Tasks | Project |
+| Content calendar | `Wiki/Campaigns/<campaign>.md` | Campaign |
+| Content item | `Wiki/Content/<item>.md` | Content |
 | Research dump | `Sources/_inbox/<topic>.md` -> INGEST to `Wiki/Concepts/` or `Wiki/Synthesis/` | Concept or Synthesis |
 | Project deliverable | `Wiki/Projects/<project>.md` | Project |
 | Recurring report (GA4, GSC, Meta Ads) | `Wiki/Synthesis/<Report Type>-YYYY-MM-DD.md` | Synthesis |
 | Marketing copy / draft | `Sources/_inbox/<topic>-draft.md` -> INGEST | Source |
 | SOP / process doc | `Wiki/Concepts/<process>.md` | Concept |
 | Code, agent specs, prompts | Local file + append to `Wiki/Synthesis/Local Files Index.md` | Synthesis |
-| Agent task log | Append to `Wiki/Synthesis/Work Queue.md` | Synthesis |
+| Uncategorized task log | Append to `Wiki/Synthesis/Work Queue.md` | Synthesis |
 | Outbound email / message draft | Append to `Wiki/People/<person>.md` ## Notes | Person |
 | Session log (ai-session-save) | `Wiki/Logs/Session-YYYY-MM-DD.md` | Log |
 | Contact intel / MSP outreach | `Wiki/People/<person>.md` or `Wiki/Companies/<company>.md` | Person / Company |
@@ -71,20 +104,24 @@ Every wiki page that is brand-specific must include `domain:` in frontmatter.
 
 | Code | Brand | Color |
 |---|---|---|
-| `MNA` | MNA Healthcare | BLUE |
-| `TGA` | The Green Anchor | GREEN |
-| `SHL` | Side Hustle Labs | PURPLE |
-| `TGAH` | TGA Health | PINK |
+| `MNA` | MNA Healthcare, employer/work context | BLUE |
+| `TGA` | The Green Anchor, active brand | GREEN |
+| `PPH` | Pink Party House Co., TGA client | PINK |
+| `SHL` | Side Hustle Labs, back-burner | PURPLE |
+| `TGAH` | TGA Health / tgahealth.shop, n8n surface | PINK |
 | `PERSONAL` | Personal / fitness / learning | - |
 | `CROSS` | Spans multiple brands | - |
 
 If brand is unstated and the task is brand-specific, ask before writing.
 
-Brand inference (when not stated):
-- "What should I use?" -> TGAH
-- "How do I do this?" -> SHL
-- "Can you build this for me?" -> TGA
-- MNA Healthcare is never auto-inferred - always tag explicitly
+Domain inference:
+- MNA, travel nurse staffing, Pulse CRM, Mailcoach outreach, PA NCF -> `MNA`, tag `employer/mna-healthcare`
+- The Green Anchor, joseinarcadia, thegreenxnchor, thegreenanchor.com -> `TGA`, tag `brand/the-green-anchor`
+- Pink Party House, pinkbouncehousebroward.com -> `PPH`, tags `area/tga`, `brand/the-green-anchor`, `client/pink-party-house`
+- tgahealth.shop or n8n public webhook surface -> `TGAH` or `CROSS` depending on whether the work is site-specific or infrastructure-wide
+- Side Hustle Labs, OSINT ideas -> `SHL`, but treat as back-burner unless user explicitly reactivates
+- Personal learning, travel, health -> `PERSONAL`
+- AI routing, LLM Wiki, shared tooling -> `CROSS`
 
 ---
 

@@ -64,13 +64,35 @@ If a tool is missing, return STATUS: blocked and report which tool.
 
 ## Brand context
 
-Owner: [your name]. Operates four brands:
-- **WORK (your day-job brand)** (travel nurse staffing, B2B). Voice: confident, professional, human.
-- **SIDE (your agency brand)** (web/marketing/AI agency). Voice: grounded, practical, problem-solver.
-- **OTHER (your wellness brand)** (wellness affiliate). Voice: supportive, realistic, approachable.
-- **MAIN (your main brand)** (affiliate digital products). Voice: direct, value-first, no hype.
+Owner: Jose Suarez. Active domains:
+- **MNA**: MNA Healthcare, Jose's employer and business development work context. MNA is not a client.
+- **TGA**: The Green Anchor, Jose's active brand for web, content, automation, and client services.
+- **PPH**: Pink Party House Co., first TGA client. Use `client/pink-party-house`.
+- **SHL**: Side Hustle Labs, back-burner automation and OSINT ideas.
+- **TGAH**: TGA Health / `tgahealth.shop`, currently a TGA web/automation surface for n8n.
+- **PERSONAL**: personal learning, health, travel, and life projects.
+- **CROSS**: routing, infrastructure, wiki, and shared systems.
 
 If a task is brand-specific and the brand isn't named, ask which brand or proceed with an explicit placeholder when the output can safely be drafted generically.
+
+---
+
+## LLM Wiki memory contract
+
+Every non-trivial task must be made durable in the Obsidian LLM Wiki, no matter which CLI AI performs the work.
+
+Before finalizing:
+1. Classify the work into one domain: `MNA`, `TGA`, `PPH`, `SHL`, `TGAH`, `PERSONAL`, or `CROSS`.
+2. Identify the canonical wiki page:
+   - project/task work -> `Wiki/Projects/<project>.md`
+   - content calendar/campaign work -> `Wiki/Campaigns/<campaign>.md`
+   - individual content item -> `Wiki/Content/<item>.md`
+   - unresolved or cross-cutting work -> `Wiki/Synthesis/Work Queue.md`
+3. Append the work under the correct section: `## Next Actions`, `## Decisions`, `## Content Calendar`, `## Notes`, or `## History`.
+4. Update `last-updated` and the relevant Notebook Navigator tags, such as `area/tga`, `employer/mna-healthcare`, or `client/pink-party-house`.
+5. Append `Wiki/log.md` with a short UPDATE/INGEST/QUERY line.
+
+Do not leave completed work only in chat, scratch files, or local transcripts. Scratch is temporary; the wiki is the durable source of truth.
 
 ---
 
@@ -81,3 +103,4 @@ If a task is brand-specific and the brand isn't named, ask which brand or procee
 - Don't run destructive commands (`rm -rf`, dropping DBs) without explicit instruction.
 - Don't fetch URLs when Gemini is available for research. Route search, OSINT, large public-source lookups, Google ecosystem work, and multimodal research to Gemini.
 - Escalate to Claude for strategy decisions, ambiguous tradeoffs, scoring rubrics, precision review, final QA for brand-facing work, brand voice/polish where quality matters, conflicts between sources/tool outputs, high-stakes judgment, and similar cases.
+- Don't skip the LLM Wiki memory contract. If the right destination is unclear, log to `Wiki/Synthesis/Work Queue.md` with domain and next action.
